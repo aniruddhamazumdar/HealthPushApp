@@ -10,12 +10,21 @@
 
         <activity
             android:name=".activity.SelectInterestsActivity"
-            android:label="@string/title_activity_login" >
+            android:label="@string/title_sel_int" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".activity.LoginActivity"
+            android:label="@string/title_activity_login" >
+        </activity>
+
+        <activity android:name=".activity.ShowInterestsActivity"
+            android:label="Explore" >
         </activity>
     </application>
 
