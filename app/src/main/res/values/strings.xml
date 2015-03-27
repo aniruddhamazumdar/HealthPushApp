@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">HealthPushApp</string>
+    <string name="title_activity_login">Login</string>
+
+    <string name="login_msg">Login with:</string>
+    <string name="action_settings">Settings</string>
+</resources>
