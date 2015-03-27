@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckedTextView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -64,9 +65,6 @@ public class SelectInterestsActivity extends ActionBarActivity {
 
         initControls();
         initData();
-
-        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME | ActionBar.DISPLAY_SHOW_TITLE
-                | ActionBar.DISPLAY_HOME_AS_UP);
     }
 
     @Override
@@ -77,11 +75,6 @@ public class SelectInterestsActivity extends ActionBarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            finish();
-            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-            return true;
-        }
         if (item.getItemId() == R.id.done) {
             showInterestsActivity();
         }
@@ -186,9 +179,9 @@ public class SelectInterestsActivity extends ActionBarActivity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             if (convertView == null) {
-                convertView = mInflater.inflate(R.layout.item_interests, parent, false);
+                convertView = mInflater.inflate(android.R.layout.simple_list_item_multiple_choice, parent, false);
             }
-            ((TextView) convertView.findViewById(R.id.tv_interest_name)).setText(mInterests[position]);
+            ((CheckedTextView) convertView).setText(mInterests[position]);
             return convertView;
         }
     }
