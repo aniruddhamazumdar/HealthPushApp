@@ -4,26 +4,23 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckedTextView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.androidsocialnetworks.lib.SocialPerson;
 import com.androidsocialnetworks.lib.listener.OnRequestSocialPersonCompleteListener;
 import com.healthpush.healthpushapp.R;
 import com.healthpush.healthpushapp.common.SocialNetworkHandler;
 import com.healthpush.healthpushapp.common.Utils;
-import com.healthpush.healthpushapp.ui.SimpleSectionedListAdapter;
+import com.healthpush.healthpushapp.common.SimpleSectionedListAdapter;
 
 import java.util.ArrayList;
 
@@ -83,7 +80,7 @@ public class SelectInterestsActivity extends ActionBarActivity {
 
     private void initControls() {
         interest_list = (ListView) findViewById(R.id.interest_list);
-        interest_list.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+        interest_list.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
         user_layout = findViewById(R.id.user_layout);
     }
@@ -137,7 +134,7 @@ public class SelectInterestsActivity extends ActionBarActivity {
         for (int i = 0; i < checked.size(); i++) {
             // Item position in adapter
             int position = checked.keyAt(i);
-            if (!mHeaderPosList.contains(position)) {
+            if (!mHeaderPosList.contains(position + 1)) {
                 // Add sport if it is checked i.e.) == TRUE!
                 if (checked.valueAt(i))
                     selectedItems.add(String.valueOf(mSectionedAdapter.getItem(position)));

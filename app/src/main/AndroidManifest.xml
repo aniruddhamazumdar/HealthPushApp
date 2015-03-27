@@ -24,7 +24,7 @@
         </activity>
 
         <activity android:name=".activity.ShowInterestsActivity"
-            android:label="Explore" >
+            android:label="Explore whats new" >
         </activity>
     </application>
 
