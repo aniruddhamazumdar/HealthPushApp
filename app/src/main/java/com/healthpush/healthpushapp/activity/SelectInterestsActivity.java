@@ -17,9 +17,6 @@ import com.healthpush.healthpushapp.R;
 import com.healthpush.healthpushapp.common.SocialNetworkHandler;
 import com.healthpush.healthpushapp.common.Utils;
 
-import java.util.ArrayList;
-import java.util.zip.Inflater;
-
 /**
  * Created by aniruddhamazumdar on 27/03/15.
  */
@@ -74,9 +71,9 @@ public class SelectInterestsActivity extends ActionBarActivity {
         SocialNetworkHandler.getInstance().twitterSocialNetwork.requestCurrentPerson(new OnRequestSocialPersonCompleteListener() {
             @Override
             public void onRequestSocialPersonSuccess(int i, SocialPerson socialPerson) {
-                socialPerson.avatarURL;
-                socialPerson.name;
-                socialPerson.profileURL;
+//                socialPerson.avatarURL;
+//                socialPerson.name;
+//                socialPerson.profileURL;
             }
 
             @Override
