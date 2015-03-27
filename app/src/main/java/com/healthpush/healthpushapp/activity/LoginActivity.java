@@ -85,7 +85,7 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
 
     @Override
     public void onClick(View v) {
-        switch(v.getId()) {
+        switch (v.getId()) {
             case R.id.btn_twitter:
                 loginWithTwitter();
                 break;
@@ -109,11 +109,11 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
         if (mSocialNetworkManager == null) {
 
             mSocialNetworkManager = SocialNetworkManager.Builder.from(this)
-                .twitter(TWITTER_API_TOKEN, TWITTER_API_SECRET)
+                    .twitter(TWITTER_API_TOKEN, TWITTER_API_SECRET)
 //            .linkedIn(<< LINKED_IN  API TOKEN  >>, << LINKED_IN API TOKEN  >>, "r_basicprofile+rw_nus+r_network+w_messages")
 //            .facebook()
 //                    .googlePlus()
-                .build();
+                    .build();
             getSupportFragmentManager().beginTransaction().add(mSocialNetworkManager, SOCIAL_NETWORK_TAG).commit();
 
             mSocialNetworkManager.setOnInitializationCompleteListener(new SocialNetworkManager.OnInitializationCompleteListener() {
