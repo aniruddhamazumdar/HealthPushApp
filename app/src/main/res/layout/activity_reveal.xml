@@ -2,7 +2,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/container"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_gravity="top">
 
     <ScrollView
         android:id="@+id/scrollView"
@@ -12,6 +13,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginBottom="48dp"
             android:orientation="vertical">
 
             <LinearLayout
@@ -92,18 +94,17 @@
             <FrameLayout
                 android:id="@+id/map_container"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"/>
+                android:layout_height="150dp"/>
 
 
         </LinearLayout>
-
-
-
 
         </LinearLayout>
 
 
     </ScrollView>
+
+   <include layout="@layout/bottom_navigation"/>
 
     <include layout="@layout/item_progressbar"/>
 

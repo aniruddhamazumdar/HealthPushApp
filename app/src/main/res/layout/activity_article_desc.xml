@@ -20,12 +20,24 @@
                 android:layout_height="180dp"
                 android:id="@+id/desc_image" />
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1.0dp"
+                android:background="@android:color/darker_gray"/>
+
             <TextView
                 android:id="@+id/desc_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
+                android:textColor="@android:color/white"
+                android:background="#0099cc"
                 android:minHeight="?attr/actionBarSize"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1.0dp"
+                android:paddingLeft="10dp"
+                android:background="@android:color/darker_gray"/>
 
             <TextView
                 android:id="@+id/desc_txt"

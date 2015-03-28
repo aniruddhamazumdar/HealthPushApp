@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -32,7 +33,7 @@ import java.util.List;
 /**
  * Created by ravikiran on 27/03/15.
  */
-public class RevealCategory extends ActionBarActivity {
+public class RevealCategory extends ActionBarActivity implements View.OnClickListener {
 
     private RevealFragment mRevealFragment;
     private LayoutInflater mLayoutInflater;
@@ -48,6 +49,9 @@ public class RevealCategory extends ActionBarActivity {
     private TextView mVideoHeader;
     private ArrayList<FeedDesc.Feeds> mArticlesList;
     private ArrayList<FeedDesc.Feeds> mVideosList;
+    private Button mProfileBtn;
+    private Button mNetworkBtn;
+    private Button mCheckInBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,7 +106,12 @@ public class RevealCategory extends ActionBarActivity {
         mArticleHeader = (TextView) findViewById(R.id.article_header);
         mVideoHeader = (TextView) findViewById(R.id.video_header);
         mProgressBarContainer.setVisibility(View.GONE);
-
+        mProfileBtn = (Button) findViewById(R.id.profile_btn);
+        mProfileBtn.setOnClickListener(this);
+        mNetworkBtn = (Button) findViewById(R.id.network_btn);
+        mNetworkBtn.setOnClickListener(this);
+        mCheckInBtn = (Button) findViewById(R.id.checkin_btn);
+        mCheckInBtn.setOnClickListener(this);
     }
 
     @Override
@@ -300,4 +309,28 @@ public class RevealCategory extends ActionBarActivity {
     }
 
 
+    @Override
+    public void onClick(View v) {
+
+        switch (v.getId()){
+            case R.id.profile_btn:
+//                Intent profileIntent = new Intent(this,Por);
+//                startActivity(profileIntent);
+//                finish();
+                break;
+
+            case R.id.network_btn:
+//
+//                Intent networkIntent = new Intent(this,Por);
+//                startActivity(networkIntent);
+//                finish();
+
+                break;
+
+            case R.id.checkin_btn:
+
+
+                break;
+        }
+    }
 }
