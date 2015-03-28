@@ -1,7 +1,6 @@
 package com.healthpush.healthpushapp.common;
 
 import android.support.v4.util.ArrayMap;
-import android.text.TextUtils;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
@@ -13,22 +12,19 @@ import com.android.volley.error.ParseError;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import com.healthpush.healthpushapp.HealthPushApplication;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
+
+import static com.healthpush.healthpushapp.HealthPushApplication.ACCEPT;
+import static com.healthpush.healthpushapp.HealthPushApplication.AUTH_HEADER;
+import static com.healthpush.healthpushapp.HealthPushApplication.DROID_HEADER;
 
 /**
  * Volley adapter for JSON requests that will be parsed into Java objects by Gson.
  */
 public class PractoGsonRequest<T> extends PractoBaseRequest<T> {
-
-    public static final String AUTH_HEADER = "X-AUTH-TOKEN";
-    public static final String PROFILE_TOKEN_HEADER = "X-PROFILE-TOKEN";
-    public static final String FABRIC_TOKEN_HEADER = "X-FABRIC-API-TOKEN";
-    public static final String DROID_HEADER = "X-DROID-VERSION";
-    public static final String API_VERSION = "API-Version";
-    public static final String ACCEPT = "Accept";
-    public static final String ACCEPT_TYPE_JSON = "application/json";
     public static final String TAG = "FabricVolley";
 
     private final Gson gson = new Gson();
@@ -63,12 +59,9 @@ public class PractoGsonRequest<T> extends PractoBaseRequest<T> {
         if (headers == null) {
             headers = new ArrayMap<String, String>();
         }
-        if (!TextUtils.isEmpty(auth)) {
-            headers.put(AUTH_HEADER, auth);
-        }
+        headers.put(AUTH_HEADER, HealthPushApplication.X_AUTH_TOKEN);
         headers.put(DROID_HEADER, "android");
         headers.put(ACCEPT, "application/json");
-        headers.put(API_VERSION, "2.0");
     }
 
     @Override
