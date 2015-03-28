@@ -1,5 +1,6 @@
 package com.healthpush.healthpushapp.activity;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -26,6 +27,7 @@ import com.healthpush.healthpushapp.request.PractoGsonRequest;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by ravikiran on 27/03/15.
@@ -44,6 +46,8 @@ public class RevealCategory extends ActionBarActivity {
     private View mProgressBarContainer;
     private TextView mArticleHeader;
     private TextView mVideoHeader;
+    private ArrayList<FeedDesc.Feeds> mArticlesList;
+    private ArrayList<FeedDesc.Feeds> mVideosList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,17 +60,19 @@ public class RevealCategory extends ActionBarActivity {
 
         mSelectedInterests = Utils.getUserInterests(mPrefs);
 
-       // mCategory = args.getString("category");
+        // mCategory = args.getString("category");
 
         mLayoutInflater = LayoutInflater.from(this);
 
+        mArticlesList = new ArrayList<FeedDesc.Feeds>();
+        mVideosList = new ArrayList<FeedDesc.Feeds>();
 
         initControls();
         setActionBarSpinner();
 
     }
 
-    private void setActionBarSpinner(){
+    private void setActionBarSpinner() {
         /** Create an array adapter to populate dropdownlist */
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_spinner_dropdown_item, mSelectedInterests);
 
@@ -78,7 +84,7 @@ public class RevealCategory extends ActionBarActivity {
 
             @Override
             public boolean onNavigationItemSelected(int itemPosition, long itemId) {
-                Toast.makeText(getBaseContext(), "You selected : " + mSelectedInterests[itemPosition]  , Toast.LENGTH_SHORT).show();
+                Toast.makeText(getBaseContext(), "You selected : " + mSelectedInterests[itemPosition], Toast.LENGTH_SHORT).show();
                 loadMap(mSelectedInterests[itemPosition].trim());
                 setArticles(mSelectedInterests[itemPosition].trim());
                 return false;
@@ -89,12 +95,13 @@ public class RevealCategory extends ActionBarActivity {
         getSupportActionBar().setListNavigationCallbacks(adapter, navigationListener);
     }
 
-    private void initControls(){
+    private void initControls() {
         mArticleContainer = (LinearLayout) findViewById(R.id.articles_container);
         mVidoesContainer = (LinearLayout) findViewById(R.id.videos_container);
         mProgressBarContainer = findViewById(R.id.progressContainer);
-        mArticleHeader = (TextView)findViewById(R.id.article_header);
-        mVideoHeader = (TextView)findViewById(R.id.video_header);
+        mArticleHeader = (TextView) findViewById(R.id.article_header);
+        mVideoHeader = (TextView) findViewById(R.id.video_header);
+        mProgressBarContainer.setVisibility(View.GONE);
 
     }
 
@@ -103,12 +110,12 @@ public class RevealCategory extends ActionBarActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-    private void setArticles(final String category){
+    private void setArticles(final String category) {
         //getArticles();
         String url = "https://6caa58a5.ngrok.com/api/feed";
         final ArrayMap<String, String> param = new ArrayMap<String, String>();
         param.put("type", "articles");
-        param.put("category", category);
+        param.put("category", "running");
 
         PractoGsonRequest<FeedDesc> request = new PractoGsonRequest<FeedDesc>(Request.Method.GET,
                 url,
@@ -119,34 +126,36 @@ public class RevealCategory extends ActionBarActivity {
                     @Override
                     public void onResponse(FeedDesc fitVideos) {
 
-                        int count = 0;
-                        for (FeedDesc.Feeds feeds : fitVideos.feed){
-                            if (count < 3){
-                                View articleView = mLayoutInflater.inflate(R.layout.item_article, mArticleContainer, false);
-                                ImageView articleImage =  (ImageView) articleView.findViewById(R.id.article_image);
+                        if (!fitVideos.feed.isEmpty()) {
+                            mArticlesList = fitVideos.feed;
+                            int count = 0;
+                            for (FeedDesc.Feeds feeds : fitVideos.feed) {
+                                if (count < 3) {
+                                    View articleView = mLayoutInflater.inflate(R.layout.item_article, mArticleContainer, false);
+                                    ImageView articleImage = (ImageView) articleView.findViewById(R.id.article_image);
 
-                                Picasso.with(RevealCategory.this).load(feeds.image).placeholder(getResources().getDrawable(R.drawable.common_signin_btn_icon_normal_dark)).error(getResources().getDrawable(R.drawable.common_signin_btn_icon_normal_dark)).into(articleImage);
-                                TextView articleTxt = (TextView) articleView.findViewById(R.id.article_txt);
+                                    Picasso.with(RevealCategory.this).load(feeds.image).placeholder(getResources().getDrawable(R.drawable.common_signin_btn_icon_normal_dark)).error(getResources().getDrawable(R.drawable.common_signin_btn_icon_normal_dark)).into(articleImage);
+                                    TextView articleTxt = (TextView) articleView.findViewById(R.id.article_txt);
 
-                                articleTxt.setText(feeds.title);
+                                    articleTxt.setText(feeds.title);
 
-                                mArticleContainer.addView(articleView);
-                                count = mArticleContainer.getChildCount();
-                            } else {
-                                View articleView = mLayoutInflater.inflate(R.layout.item_digit_article, mArticleContainer, false);
-                                TextView articleTxt = (TextView) articleView.findViewById(R.id.count_txt);
+                                    mArticleContainer.addView(articleView);
+                                    count = mArticleContainer.getChildCount();
+                                } else {
+                                    View articleView = mLayoutInflater.inflate(R.layout.item_digit_article, mArticleContainer, false);
+                                    TextView articleTxt = (TextView) articleView.findViewById(R.id.count_txt);
 
-                                articleTxt.setText(""+(fitVideos.feed.size() - 3)+"+"+"\n"+"Articles");
-                                //   Picasso.with(mContext).load(data.url).into(articleImage);
+                                    articleTxt.setText("" + (fitVideos.feed.size() - 3) + "+" + "\n" + "Articles");
+                                    //   Picasso.with(mContext).load(data.url).into(articleImage);
 
-                                mArticleContainer.addView(articleView);
+                                    mArticleContainer.addView(articleView);
+                                    setVideos(category);
+                                    return;
+                                }
 
-                                return;
                             }
-
                         }
 
-                        setVideos(category);
 
                     }
                 },
@@ -154,7 +163,6 @@ public class RevealCategory extends ActionBarActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
-                        setVideos(category);
                         mArticleContainer.setVisibility(View.GONE);
                         mArticleHeader.setVisibility(View.GONE);
                     }
@@ -165,13 +173,13 @@ public class RevealCategory extends ActionBarActivity {
 
     }
 
-    private void setVideos(String category){
+    private void setVideos(String category) {
         //getArticles();
 
         String url = "https://6caa58a5.ngrok.com/api/feed";
         final ArrayMap<String, String> param = new ArrayMap<String, String>();
         param.put("type", "videos");
-        param.put("category",category);
+        param.put("category", "yoga");
 
         PractoGsonRequest<FeedDesc> request = new PractoGsonRequest<FeedDesc>(Request.Method.GET,
                 url,
@@ -182,62 +190,109 @@ public class RevealCategory extends ActionBarActivity {
                     @Override
                     public void onResponse(FeedDesc fitVideos) {
 
-                        int count = 0;
-                        for (FeedDesc.Feeds feeds : fitVideos.feed){
-                            if (count < 3){
-                                View videoView = mLayoutInflater.inflate(R.layout.item_video, mVidoesContainer, false);
-                                ImageView videoImage =  (ImageView) videoView.findViewById(R.id.video_image);
+                        if (!fitVideos.feed.isEmpty()) {
+                            mVideosList = fitVideos.feed;
 
-                                Picasso.with(RevealCategory.this).load(feeds.image).placeholder(getResources().getDrawable(R.drawable.common_signin_btn_icon_normal_dark)).error(getResources().getDrawable(R.drawable.common_signin_btn_icon_normal_dark)).into(videoImage);
+                            int count = 0;
+                            for (FeedDesc.Feeds feeds : fitVideos.feed) {
+                                if (count < 3) {
+                                    View videoView = mLayoutInflater.inflate(R.layout.item_video, mVidoesContainer, false);
+                                    ImageView videoImage = (ImageView) videoView.findViewById(R.id.video_image);
 
-                                mVidoesContainer.addView(videoView);
-                                count = mVidoesContainer.getChildCount();
-                            } else {
-                                View videoView = mLayoutInflater.inflate(R.layout.item_digit_article, mVidoesContainer, false);
-                                TextView videoTxt = (TextView) videoView.findViewById(R.id.count_txt);
+                                    Picasso.with(RevealCategory.this).load(feeds.image).placeholder(getResources().getDrawable(R.drawable.common_signin_btn_icon_normal_dark)).error(getResources().getDrawable(R.drawable.common_signin_btn_icon_normal_dark)).into(videoImage);
 
-                                videoTxt.setText(""+(fitVideos.feed.size() - 3)+"+"+"\n"+"Videos");
-                                //   Picasso.with(mContext).load(data.url).into(articleImage);
+                                    mVidoesContainer.addView(videoView);
+                                    count = mVidoesContainer.getChildCount();
+                                } else {
+                                    View videoView = mLayoutInflater.inflate(R.layout.item_digit_article, mVidoesContainer, false);
+                                    TextView videoTxt = (TextView) videoView.findViewById(R.id.count_txt);
 
-                                mVidoesContainer.addView(videoView);
+                                    videoTxt.setText("" + (fitVideos.feed.size() - 3) + "+" + "\n" + "Videos");
+                                    //   Picasso.with(mContext).load(data.url).into(articleImage);
 
-                                return;
+                                    mVidoesContainer.addView(videoView);
+                                    setArticlesCLickListeners();
+                                    setVideoCLickListeners();
+                                    mProgressBarContainer.setVisibility(View.GONE);
+                                    return;
+                                }
+
                             }
-
                         }
-                        setCLickListeners();
-                        mProgressBarContainer.setVisibility(View.GONE);
 
                     }
                 },
 
                 new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-                mVidoesContainer.setVisibility(View.GONE);
-                mVideoHeader.setVisibility(View.GONE);
-                mProgressBarContainer.setVisibility(View.GONE);
-            }
-        });
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        mVidoesContainer.setVisibility(View.GONE);
+                        mVideoHeader.setVisibility(View.GONE);
+                        mProgressBarContainer.setVisibility(View.GONE);
+                    }
+                });
 
         HealthPushApplication.getInstance().addToRequestQueue(request, "TAG");
     }
 
-    private void loadMap(String category){
+    private void loadMap(String category) {
         Bundle bundle = new Bundle();
-        bundle.putString("category",category);
+        bundle.putString("category", category);
         ClinicMapFragment.show(getSupportFragmentManager(), bundle, R.id.map_container);
     }
 
-    private void setCLickListeners(){
-        if (mArticleContainer.getChildCount() > 0){
-            for(int i = 0 ; i < mArticleContainer.getChildCount(); i++){
-                ((View)mArticleContainer.getChildAt(i)).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(RevealCategory.this,"test",Toast.LENGTH_SHORT).show();
-                    }
-                });
+    private void setArticlesCLickListeners() {
+        if (mArticleContainer.getChildCount() > 0) {
+            for (int i = 0; i < mArticleContainer.getChildCount(); i++) {
+                final int jProxy = i;
+                if (i == 3) {
+                    ((View) mArticleContainer.getChildAt(i)).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Toast.makeText(RevealCategory.this, "test 2", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } else {
+                    ((View) mArticleContainer.getChildAt(i)).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            FeedDesc.Feeds feeds = mArticlesList.get(jProxy);
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable("FEED_DESC",feeds);
+                            Intent intent = new Intent(RevealCategory.this,ArticleActivity.class);
+                            intent.putExtras(bundle);
+                            startActivity(intent);
+
+                        }
+                    });
+                }
+
+
+            }
+        }
+    }
+
+    private void setVideoCLickListeners() {
+        if (mVidoesContainer.getChildCount() > 0) {
+            for (int i = 0; i < mVidoesContainer.getChildCount(); i++) {
+
+                if (i == 3) {
+                    ((View) mVidoesContainer.getChildAt(i)).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Toast.makeText(RevealCategory.this, "test 2", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } else {
+                    ((View) mVidoesContainer.getChildAt(i)).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Toast.makeText(RevealCategory.this, "test", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+
+
             }
         }
 
