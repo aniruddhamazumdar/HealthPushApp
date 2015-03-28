@@ -91,10 +91,12 @@
                 android:paddingLeft="10dp"
                 android:background="@android:color/darker_gray"/>
 
-            <FrameLayout
-                android:id="@+id/map_container"
+
+            <ImageView
+                android:id="@+id/map"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"/>
+                android:layout_height="120dp"
+                android:src="@drawable/abc_list_focused_holo"/>
 
 
         </LinearLayout>

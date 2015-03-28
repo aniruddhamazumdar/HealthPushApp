@@ -55,6 +55,7 @@ public class RevealCategory extends ActionBarActivity implements View.OnClickLis
     private Button mProfileBtn;
     private Button mNetworkBtn;
     private Button mCheckInBtn;
+    private ImageView mMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,8 +92,7 @@ public class RevealCategory extends ActionBarActivity implements View.OnClickLis
 
             @Override
             public boolean onNavigationItemSelected(int itemPosition, long itemId) {
-                Toast.makeText(getBaseContext(), "You selected : " + mSelectedInterests[itemPosition], Toast.LENGTH_SHORT).show();
-                loadMap(mSelectedInterests[itemPosition].trim());
+                mCategory = "yoga";
                 startQuery(mSelectedInterests[itemPosition].trim());
                 return false;
             }
@@ -115,6 +115,8 @@ public class RevealCategory extends ActionBarActivity implements View.OnClickLis
         mNetworkBtn.setOnClickListener(this);
         mCheckInBtn = (Button) findViewById(R.id.checkin_btn);
         mCheckInBtn.setOnClickListener(this);
+        mMap = (ImageView)findViewById(R.id.map);
+        mMap.setOnClickListener(this);
     }
 
     @Override
@@ -221,11 +223,6 @@ public class RevealCategory extends ActionBarActivity implements View.OnClickLis
         setArticlesCLickListeners();
     }
 
-    private void loadMap(String category) {
-        Bundle bundle = new Bundle();
-        bundle.putString("category", category);
-        ClinicMapFragment.show(getSupportFragmentManager(), bundle, R.id.map_container);
-    }
 
     private void setArticlesCLickListeners() {
         if (mArticleContainer.getChildCount() > 0) {
@@ -310,6 +307,15 @@ public class RevealCategory extends ActionBarActivity implements View.OnClickLis
                 startActivity(checkInIntent);
                 finish();
 
+                break;
+
+            case R.id.map:
+                Bundle bundle = new Bundle();
+                bundle.putString("category",mCategory);
+                Intent locationIntent = new Intent(this,MapActivity.class);
+                locationIntent.putExtras(bundle);
+                startActivity(locationIntent);
+                finish();
                 break;
         }
     }
