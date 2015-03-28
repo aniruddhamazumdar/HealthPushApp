@@ -41,9 +41,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.healthpush.healthpushapp.R;
-import com.healthpush.healthpushapp.common.GeoLocation;
 import com.healthpush.healthpushapp.common.GooglePlacesReadTask;
-import com.healthpush.healthpushapp.common.PlaceJSONParser;
 import com.healthpush.healthpushapp.common.Utils;
 
 
