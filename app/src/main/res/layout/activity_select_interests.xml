@@ -4,10 +4,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Alright, tell us the activities you do or are interested in.. come on don't be shy.. select more than one if needed"
+        android:layout_margin="8dp" />
+
     <ListView
         android:id="@+id/interest_list"
         android:layout_width="match_parent"
-        android:padding="16dp"
+        android:padding="8dp"
         android:layout_height="0dp"
         android:layout_weight="1"></ListView>
 

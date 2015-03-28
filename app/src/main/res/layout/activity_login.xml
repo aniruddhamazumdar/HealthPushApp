@@ -13,28 +13,26 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="attach account:"
-        android:textColor="@android:color/darker_gray" />
+        android:text="LOGIN WITH:"
+        android:textColor="@android:color/darker_gray"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:visibility="gone" />
+
+    <com.facebook.login.widget.LoginButton
+        android:id="@+id/facebook_login"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_gravity="left"
+        android:layout_marginTop="10dp" />
 
     <Button
         android:id="@+id/btn_twitter"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:padding="16dp"
-        android:text="Twitter" />
-
-    <Button
-        android:id="@+id/btn_quora"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:padding="16dp"
-        android:text="Quora" />
-
-    <com.facebook.login.widget.LoginButton
-        android:id="@+id/facebook_login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="30dp"
-        android:layout_marginBottom="30dp" />
+        android:text="Twitter"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:visibility="gone" />
 </LinearLayout>
