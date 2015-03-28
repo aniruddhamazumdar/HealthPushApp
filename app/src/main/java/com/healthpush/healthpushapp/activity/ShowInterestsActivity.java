@@ -1,5 +1,6 @@
 package com.healthpush.healthpushapp.activity;
 
+import android.content.Intent;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -106,6 +107,11 @@ public class ShowInterestsActivity extends ActionBarActivity {
         }
     }
 
+    private void startInterestDetails(String value) {
+        Intent intent = new Intent(this, RevealCategory.class);
+        startActivity(intent);
+    }
+
     private void showSelectedInterests() {
         mSelectedInterests = Utils.getUserInterests(mPrefs);
         // Show user selected interests screen
@@ -119,9 +125,7 @@ public class ShowInterestsActivity extends ActionBarActivity {
         });
     }
 
-    private void startInterestDetails(String selectedInterest) {
-        // Start interest details activity here.
-    }
+
 
     private class InterestsAdapter extends BaseAdapter {
 
