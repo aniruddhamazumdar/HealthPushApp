@@ -18,8 +18,8 @@ import com.healthpush.healthpushapp.common.Utils;
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
-import static com.healthpush.healthpushapp.common.HealthPushApplication.ACCEPT;
-import static com.healthpush.healthpushapp.common.HealthPushApplication.AUTH_HEADER;
+import static com.healthpush.healthpushapp.HealthPushApplication.ACCEPT;
+import static com.healthpush.healthpushapp.HealthPushApplication.AUTH_HEADER;
 
 /**
  * Volley adapter for JSON requests that will be parsed into Java objects by Gson.

@@ -2,20 +2,17 @@ package com.healthpush.healthpushapp.activity;
 
 import android.annotation.TargetApi;
 import android.content.Context;
-import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.util.ArrayMap;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -24,16 +21,14 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.error.VolleyError;
 import com.healthpush.healthpushapp.R;
-import com.healthpush.healthpushapp.common.HealthPushApplication;
+import com.healthpush.healthpushapp.HealthPushApplication;
 import com.healthpush.healthpushapp.model.Article;
 import com.healthpush.healthpushapp.request.PractoGsonRequest;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import dev.dworks.libs.actionbarplus.ActionBarFragment;
-import dev.dworks.libs.actionbarplus.app.ActionBarGridFragment;
 
 /**
  * Created by ravikiran on 27/03/15.

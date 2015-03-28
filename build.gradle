@@ -2,10 +2,6 @@
 
 buildscript {
     repositories {
-<<<<<<< HEAD
-        jcenter()
-=======
->>>>>>> 1df987c6d41fea5f44245321750779451c403b16
         mavenCentral()
     }
     dependencies {

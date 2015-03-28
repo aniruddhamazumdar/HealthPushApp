@@ -8,13 +8,14 @@ import java.util.ArrayList;
  */
 public class FeedResponse implements Serializable {
 
-    public ArrayList<Feed> feeds = new ArrayList<>();
+    public ArrayList<Feed> feed = new ArrayList<>();
 
     public static class Feed {
         public String category;
         public String desc;
         public String title;
         public String type;
+        public String image;
         public String url;
 
         public boolean read;
