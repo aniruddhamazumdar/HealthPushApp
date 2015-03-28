@@ -11,8 +11,10 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,7 +23,9 @@ import com.android.volley.Response;
 import com.android.volley.error.VolleyError;
 import com.healthpush.healthpushapp.HealthPushApplication;
 import com.healthpush.healthpushapp.R;
+import com.healthpush.healthpushapp.common.PractoFabricGsonRequest;
 import com.healthpush.healthpushapp.common.Utils;
+import com.healthpush.healthpushapp.model.CategorySliced;
 import com.healthpush.healthpushapp.model.FeedDesc;
 import com.healthpush.healthpushapp.request.PractoGsonRequest;
 import com.squareup.picasso.Picasso;
@@ -32,7 +36,7 @@ import java.util.List;
 /**
  * Created by ravikiran on 27/03/15.
  */
-public class RevealCategory extends ActionBarActivity {
+public class RevealCategory extends ActionBarActivity implements View.OnClickListener {
 
     private RevealFragment mRevealFragment;
     private LayoutInflater mLayoutInflater;
@@ -46,8 +50,12 @@ public class RevealCategory extends ActionBarActivity {
     private View mProgressBarContainer;
     private TextView mArticleHeader;
     private TextView mVideoHeader;
-    private ArrayList<FeedDesc.Feeds> mArticlesList;
-    private ArrayList<FeedDesc.Feeds> mVideosList;
+    private ArrayList<CategorySliced.ArticleFeed> mArticlesList;
+    private ArrayList<CategorySliced.ArticleFeed> mVideosList;
+    private Button mProfileBtn;
+    private Button mNetworkBtn;
+    private Button mCheckInBtn;
+    private ImageView mMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,8 +72,8 @@ public class RevealCategory extends ActionBarActivity {
 
         mLayoutInflater = LayoutInflater.from(this);
 
-        mArticlesList = new ArrayList<FeedDesc.Feeds>();
-        mVideosList = new ArrayList<FeedDesc.Feeds>();
+        mArticlesList = new ArrayList<CategorySliced.ArticleFeed>();
+        mVideosList = new ArrayList<CategorySliced.ArticleFeed>();
 
         initControls();
         setActionBarSpinner();
@@ -84,9 +92,8 @@ public class RevealCategory extends ActionBarActivity {
 
             @Override
             public boolean onNavigationItemSelected(int itemPosition, long itemId) {
-                Toast.makeText(getBaseContext(), "You selected : " + mSelectedInterests[itemPosition], Toast.LENGTH_SHORT).show();
-                loadMap(mSelectedInterests[itemPosition].trim());
-                setArticles(mSelectedInterests[itemPosition].trim());
+                mCategory = "yoga";
+                startQuery(mSelectedInterests[itemPosition].trim());
                 return false;
             }
         };
@@ -102,7 +109,14 @@ public class RevealCategory extends ActionBarActivity {
         mArticleHeader = (TextView) findViewById(R.id.article_header);
         mVideoHeader = (TextView) findViewById(R.id.video_header);
         mProgressBarContainer.setVisibility(View.GONE);
-
+        mProfileBtn = (Button) findViewById(R.id.profile_btn);
+        mProfileBtn.setOnClickListener(this);
+        mNetworkBtn = (Button) findViewById(R.id.network_btn);
+        mNetworkBtn.setOnClickListener(this);
+        mCheckInBtn = (Button) findViewById(R.id.checkin_btn);
+        mCheckInBtn.setOnClickListener(this);
+        mMap = (ImageView)findViewById(R.id.map);
+        mMap.setOnClickListener(this);
     }
 
     @Override
@@ -110,116 +124,39 @@ public class RevealCategory extends ActionBarActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-    private void setArticles(final String category) {
-        //getArticles();
-        String url = "https://6caa58a5.ngrok.com/api/feed";
-        final ArrayMap<String, String> param = new ArrayMap<String, String>();
-        param.put("type", "articles");
-        param.put("category", "running");
 
-        PractoGsonRequest<FeedDesc> request = new PractoGsonRequest<FeedDesc>(Request.Method.GET,
-                url,
-                FeedDesc.class,
-                null,
-                param,
-                new Response.Listener<FeedDesc>() {
-                    @Override
-                    public void onResponse(FeedDesc fitVideos) {
-
-                        if (!fitVideos.feed.isEmpty()) {
-                            mArticlesList = fitVideos.feed;
-                            int count = 0;
-                            for (FeedDesc.Feeds feeds : fitVideos.feed) {
-                                if (count < 3) {
-                                    View articleView = mLayoutInflater.inflate(R.layout.item_article, mArticleContainer, false);
-                                    ImageView articleImage = (ImageView) articleView.findViewById(R.id.article_image);
-
-                                    Picasso.with(RevealCategory.this).load(feeds.image).placeholder(getResources().getDrawable(R.drawable.common_signin_btn_icon_normal_dark)).error(getResources().getDrawable(R.drawable.common_signin_btn_icon_normal_dark)).into(articleImage);
-                                    TextView articleTxt = (TextView) articleView.findViewById(R.id.article_txt);
-
-                                    articleTxt.setText(feeds.title);
-
-                                    mArticleContainer.addView(articleView);
-                                    count = mArticleContainer.getChildCount();
-                                } else {
-                                    View articleView = mLayoutInflater.inflate(R.layout.item_digit_article, mArticleContainer, false);
-                                    TextView articleTxt = (TextView) articleView.findViewById(R.id.count_txt);
-
-                                    articleTxt.setText("" + (fitVideos.feed.size() - 3) + "+" + "\n" + "Articles");
-                                    //   Picasso.with(mContext).load(data.url).into(articleImage);
-
-                                    mArticleContainer.addView(articleView);
-                                    setVideos(category);
-                                    return;
-                                }
-
-                            }
-                        }
-
-
-                    }
-                },
-
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError volleyError) {
-                        mArticleContainer.setVisibility(View.GONE);
-                        mArticleHeader.setVisibility(View.GONE);
-                    }
-                });
-
-        HealthPushApplication.getInstance().addToRequestQueue(request, "Article");
-
-
-    }
-
-    private void setVideos(String category) {
+    private void startQuery(String category) {
         //getArticles();
 
         String url = "https://6caa58a5.ngrok.com/api/feed";
         final ArrayMap<String, String> param = new ArrayMap<String, String>();
-        param.put("type", "videos");
         param.put("category", "yoga");
 
-        PractoGsonRequest<FeedDesc> request = new PractoGsonRequest<FeedDesc>(Request.Method.GET,
+        PractoFabricGsonRequest<CategorySliced> request = new PractoFabricGsonRequest<CategorySliced>(Request.Method.GET,
                 url,
-                FeedDesc.class,
+                CategorySliced.class,
                 null,
                 param,
-                new Response.Listener<FeedDesc>() {
+                new Response.Listener<CategorySliced>() {
                     @Override
-                    public void onResponse(FeedDesc fitVideos) {
+                    public void onResponse(CategorySliced categorySlice) {
 
-                        if (!fitVideos.feed.isEmpty()) {
-                            mVideosList = fitVideos.feed;
+                        if (categorySlice != null){
 
-                            int count = 0;
-                            for (FeedDesc.Feeds feeds : fitVideos.feed) {
-                                if (count < 3) {
-                                    View videoView = mLayoutInflater.inflate(R.layout.item_video, mVidoesContainer, false);
-                                    ImageView videoImage = (ImageView) videoView.findViewById(R.id.video_image);
+                            CategorySliced.Article article = categorySlice.articles;
+                            CategorySliced.Video video = categorySlice.videos;
 
-                                    Picasso.with(RevealCategory.this).load(feeds.image).placeholder(getResources().getDrawable(R.drawable.common_signin_btn_icon_normal_dark)).error(getResources().getDrawable(R.drawable.common_signin_btn_icon_normal_dark)).into(videoImage);
+                            if (article != null && !article.feed.isEmpty()){
+                                mArticlesList = article.feed;
 
-                                    mVidoesContainer.addView(videoView);
-                                    count = mVidoesContainer.getChildCount();
-                                } else {
-                                    View videoView = mLayoutInflater.inflate(R.layout.item_digit_article, mVidoesContainer, false);
-                                    TextView videoTxt = (TextView) videoView.findViewById(R.id.count_txt);
+                                setArticles(article);
+                            }
 
-                                    videoTxt.setText("" + (fitVideos.feed.size() - 3) + "+" + "\n" + "Videos");
-                                    //   Picasso.with(mContext).load(data.url).into(articleImage);
-
-                                    mVidoesContainer.addView(videoView);
-                                    setArticlesCLickListeners();
-                                    setVideoCLickListeners();
-                                    mProgressBarContainer.setVisibility(View.GONE);
-                                    return;
-                                }
-
+                            if (video != null && !video.feed.isEmpty()){
+                                mVideosList = video.feed;
+                                setVideo(video);
                             }
                         }
-
                     }
                 },
 
@@ -235,11 +172,57 @@ public class RevealCategory extends ActionBarActivity {
         HealthPushApplication.getInstance().addToRequestQueue(request, "TAG");
     }
 
-    private void loadMap(String category) {
-        Bundle bundle = new Bundle();
-        bundle.putString("category", category);
-        ClinicMapFragment.show(getSupportFragmentManager(), bundle, R.id.map_container);
+
+    private void setVideo(CategorySliced.Video video){
+        for (CategorySliced.ArticleFeed feeds : video.feed) {
+                View videoView = mLayoutInflater.inflate(R.layout.item_video, mVidoesContainer, false);
+                ImageView videoImage = (ImageView) videoView.findViewById(R.id.video_image);
+
+                Picasso.with(RevealCategory.this).load(feeds.image).placeholder(getResources().getDrawable(R.drawable.common_signin_btn_icon_normal_dark)).error(getResources().getDrawable(R.drawable.common_signin_btn_icon_normal_dark)).into(videoImage);
+
+                mVidoesContainer.addView(videoView);
+        }
+
+        if(Integer.parseInt(video.count) > 4){
+            View videoView = mLayoutInflater.inflate(R.layout.item_digit_article, mVidoesContainer, false);
+            TextView videoTxt = (TextView) videoView.findViewById(R.id.count_txt);
+
+            videoTxt.setText("" + (Integer.parseInt(video.count) - 3) + "+" + "\n" + "Videos");
+            //   Picasso.with(mContext).load(data.url).into(articleImage);
+
+            mVidoesContainer.addView(videoView);
+        }
+
+        setVideoCLickListeners();
+
     }
+
+    private void setArticles(CategorySliced.Article article){
+        for (CategorySliced.ArticleFeed feeds : article.feed) {
+
+                View articleView = mLayoutInflater.inflate(R.layout.item_article, mArticleContainer, false);
+                ImageView articleImage = (ImageView) articleView.findViewById(R.id.article_image);
+
+                Picasso.with(RevealCategory.this).load(feeds.image).placeholder(getResources().getDrawable(R.drawable.common_signin_btn_icon_normal_dark)).error(getResources().getDrawable(R.drawable.common_signin_btn_icon_normal_dark)).into(articleImage);
+                TextView articleTxt = (TextView) articleView.findViewById(R.id.article_txt);
+
+                articleTxt.setText(feeds.title);
+
+                mArticleContainer.addView(articleView);
+        }
+
+        if(Integer.parseInt(article.count) > 4){
+            View articleView = mLayoutInflater.inflate(R.layout.item_digit_article, mArticleContainer, false);
+            TextView articleTxt = (TextView) articleView.findViewById(R.id.count_txt);
+
+            articleTxt.setText("" + (Integer.parseInt(article.count) - 3) + "+" + "\n" + "Articles");
+            //   Picasso.with(mContext).load(data.url).into(articleImage);
+            mArticleContainer.addView(articleView);
+        }
+
+        setArticlesCLickListeners();
+    }
+
 
     private void setArticlesCLickListeners() {
         if (mArticleContainer.getChildCount() > 0) {
@@ -256,7 +239,7 @@ public class RevealCategory extends ActionBarActivity {
                     ((View) mArticleContainer.getChildAt(i)).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            FeedDesc.Feeds feeds = mArticlesList.get(jProxy);
+                            CategorySliced.ArticleFeed feeds = mArticlesList.get(jProxy);
                             Bundle bundle = new Bundle();
                             bundle.putSerializable("FEED_DESC",feeds);
                             Intent intent = new Intent(RevealCategory.this,ArticleActivity.class);
@@ -300,4 +283,40 @@ public class RevealCategory extends ActionBarActivity {
     }
 
 
+    @Override
+    public void onClick(View v) {
+
+        switch (v.getId()){
+            case R.id.profile_btn:
+                Intent profileIntent = new Intent(this,UserProfileActivity.class);
+                startActivity(profileIntent);
+                finish();
+                break;
+
+            case R.id.network_btn:
+
+                Intent networkIntent = new Intent(this,NetworkActivity.class);
+                startActivity(networkIntent);
+                finish();
+
+                break;
+
+            case R.id.checkin_btn:
+
+                Intent checkInIntent = new Intent(this,CheckInActivity.class);
+                startActivity(checkInIntent);
+                finish();
+
+                break;
+
+            case R.id.map:
+                Bundle bundle = new Bundle();
+                bundle.putString("category",mCategory);
+                Intent locationIntent = new Intent(this,MapActivity.class);
+                locationIntent.putExtras(bundle);
+                startActivity(locationIntent);
+                finish();
+                break;
+        }
+    }
 }

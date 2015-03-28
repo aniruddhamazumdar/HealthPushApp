@@ -43,6 +43,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.healthpush.healthpushapp.R;
 import com.healthpush.healthpushapp.common.GooglePlacesReadTask;
 import com.healthpush.healthpushapp.common.Utils;
+import com.healthpush.healthpushapp.model.CategorySliced;
 
 
 import org.json.JSONObject;
@@ -54,6 +55,7 @@ import java.io.InputStreamReader;
 import java.lang.ref.WeakReference;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -62,7 +64,7 @@ import dev.dworks.libs.actionbarplus.ActionBarFragment;
 /**
  * Created by aniruddhamazumdar on 21/03/15.
  */
-public class ClinicMapFragment extends ActionBarFragment implements OnMapReadyCallback,LocationListener {
+public class ClinicMapFragment extends ActionBarFragment implements OnMapReadyCallback {
 
 
     private View mRootView;
@@ -77,6 +79,7 @@ public class ClinicMapFragment extends ActionBarFragment implements OnMapReadyCa
     private double latitude;
     private double longitude;
     private int PROXIMITY_RADIUS = 5000;
+    private CategorySliced.Location Mappy;
 
     public static void show(FragmentManager fragManager, Bundle args, int containerId) {
         FragmentTransaction ft = fragManager.beginTransaction();
@@ -91,8 +94,7 @@ public class ClinicMapFragment extends ActionBarFragment implements OnMapReadyCa
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
-        category = "swimming";
+        Mappy = (CategorySliced.Location)getArguments().getSerializable("location");
 
     }
 
@@ -136,44 +138,27 @@ public class ClinicMapFragment extends ActionBarFragment implements OnMapReadyCa
     private void setUpMap(GoogleMap googleMap) {
         this.mGoogleMap = googleMap;
 
-        LocationManager locationManager = (LocationManager) getActionBarActivity().getSystemService(getActionBarActivity().LOCATION_SERVICE);
-        Criteria criteria = new Criteria();
-        String bestProvider = locationManager.getBestProvider(criteria, true);
-        Location location = locationManager.getLastKnownLocation(bestProvider);
-        if (location != null) {
-            onLocationChanged(location);
+        for (CategorySliced.Loc articleFeed : Mappy.feed){
+            LatLng latLng = new LatLng(Double.parseDouble(articleFeed.location.lat),Double.parseDouble(articleFeed.location.lng));
+            drawMarker(latLng);
         }
-        locationManager.requestLocationUpdates(bestProvider, 20000, 0, this);
 
+
+    }
+
+    private void drawMarker(LatLng point){
+        // Creating an instance of MarkerOptions
+        MarkerOptions markerOptions = new MarkerOptions();
+
+        // Setting latitude and longitude for the marker
+        markerOptions.position(point);
+
+        // Adding marker on the Google Map
+        mGoogleMap.addMarker(markerOptions);
     }
 
 
 
-    @Override
-    public void onLocationChanged(Location location) {
-        latitude = location.getLatitude();
-        longitude = location.getLongitude();
-        LatLng latLng = new LatLng(latitude, longitude);
-        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(12));
-
-        Log.d("loc",""+latitude);
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-
-    }
 
 
 

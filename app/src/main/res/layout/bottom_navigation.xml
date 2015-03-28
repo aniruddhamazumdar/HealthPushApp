@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom"
+    android:orientation="horizontal">
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Me"
+        android:minHeight="48dp"
+        android:layout_weight="1"
+        android:id="@+id/profile_btn"
+        android:textSize="8dp"/>
+
+    <Button
+        android:layout_weight="1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="My Network"
+        android:minHeight="48dp"
+        android:textSize="8dp"
+        android:id="@+id/network_btn" />
+
+    <Button
+        android:layout_weight="1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:textSize="8dp"
+        android:id="@+id/checkin_btn" />
+
+    <Button
+        android:layout_weight="1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="My Interset"
+        android:minHeight="48dp"
+        android:textSize="8dp"
+        android:id="@+id/interest_btn" />
+
+    <Button
+        android:layout_weight="1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:text="Setting"
+        android:textSize="8dp"
+        android:id="@+id/setting_btn" />
+</LinearLayout>

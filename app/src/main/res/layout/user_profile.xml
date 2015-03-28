@@ -1,99 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white" >
+    android:background="@android:color/white"
+    android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingTop="16dp"
-        android:paddingLeft="16dp"
-        android:paddingBottom="4dp" >
-
-        <com.healthpush.healthpushapp.common.BezelImageView
-            android:id="@+id/profile_image"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:src="@drawable/doctor_image"
-            android:scaleType="centerCrop" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="16dp"
-            android:orientation="vertical" >
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/profile_name"
-                android:layout_width="wrap_content"
+                <com.healthpush.healthpushapp.common.BezelImageView
+                    android:id="@+id/profile_image"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:scaleType="centerCrop" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/profile_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:gravity="left"
+                        android:paddingBottom="8dp"
+                        android:paddingLeft="16dp"
+                        android:text="Kishore Kumar" />
+
+                    <TextView
+                        android:id="@+id/user_bio"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Software Eng. at Practo" />
+                </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Kishore Kumar"
-                android:paddingBottom="5dp" />
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp">
 
-            <TextView
-                android:id="@+id/user_bio"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Software Eng. at Practo" />
-        </LinearLayout>
-    </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp" >
+                    <TextView
+                        android:id="@+id/user_score"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="750"
+                        android:textSize="26sp" />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical" >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Health Points" />
+                </LinearLayout>
 
-            <TextView
-                android:id="@+id/user_score"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="26sp"
-                android:text="750" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Health Points" />
-        </LinearLayout>
+                    <TextView
+                        android:id="@+id/user_following"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="110 following" />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical" >
+                    <TextView
+                        android:id="@+id/user_followers"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="150 followers" />
+                </LinearLayout>
 
-            <TextView
-                android:id="@+id/user_following"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="110 following" />
-
-            <TextView
-                android:id="@+id/user_followers"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="150 followers" />
-        </LinearLayout>
-
-        <Button
-            android:id="@+id/btn_follow"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:layout_weight="1"
-            android:text="Follow" />
-    </LinearLayout>
+                <Button
+                    android:id="@+id/btn_follow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:layout_weight="1"
+                    android:text="Follow" />
+            </LinearLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -147,7 +149,7 @@
                     android:id="@+id/subtitle1"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
-            </LinearLayout>
+           </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 
@@ -184,4 +186,10 @@
                 android:layout_height="match_parent" />
         </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+
+    </LinearLayout>
+</ScrollView>
+
+    <include layout="@layout/bottom_navigation" />
+
+</FrameLayout>
