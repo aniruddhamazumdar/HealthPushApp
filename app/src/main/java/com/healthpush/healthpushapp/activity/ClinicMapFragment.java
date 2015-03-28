@@ -73,7 +73,7 @@ public class ClinicMapFragment extends ActionBarFragment implements OnMapReadyCa
     private String mGeoLatitude;
     private String mGeoLongitude;
     private String category;
-    private static final String GOOGLE_API_KEY = "AIzaSSDFSDF8Kv2eP0PM8adf5dSDFysdfas323SD3HA";
+    private static final String GOOGLE_API_KEY = "AIzaSyAKxRhxDxgaujTUy2k2taB-uzBUs54uWVc";
     private double latitude;
     private double longitude;
     private int PROXIMITY_RADIUS = 5000;
@@ -92,7 +92,7 @@ public class ClinicMapFragment extends ActionBarFragment implements OnMapReadyCa
         super.onCreate(savedInstanceState);
 
 
-        category = getArguments().getString("catergory","hospitals");
+        category = "swimming";
 
     }
 
@@ -145,67 +145,9 @@ public class ClinicMapFragment extends ActionBarFragment implements OnMapReadyCa
         }
         locationManager.requestLocationUpdates(bestProvider, 20000, 0, this);
 
-        startPlaceAPiSync();
-
     }
 
 
-    private void startPlaceAPiSync(){
-
-        StringBuilder googlePlacesUrl = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
-        googlePlacesUrl.append("location=" + latitude + "," + longitude);
-        googlePlacesUrl.append("&radius=" + PROXIMITY_RADIUS);
-        googlePlacesUrl.append("&types=" + category);
-        googlePlacesUrl.append("&sensor=true");
-        googlePlacesUrl.append("&key=" + GOOGLE_API_KEY);
-
-        GooglePlacesReadTask googlePlacesReadTask = new GooglePlacesReadTask();
-        Object[] toPass = new Object[2];
-        toPass[0] = mGoogleMap;
-        toPass[1] = googlePlacesUrl.toString();
-        googlePlacesReadTask.execute(toPass);
-
-    }
-
-    /** A method to download json data from url */
-    private String downloadUrl(String strUrl) throws IOException {
-        String data = "";
-        InputStream iStream = null;
-        HttpURLConnection urlConnection = null;
-        try{
-            URL url = new URL(strUrl);
-
-
-            // Creating an http connection to communicate with url
-            urlConnection = (HttpURLConnection) url.openConnection();
-
-            // Connecting to url
-            urlConnection.connect();
-
-            // Reading data from url
-            iStream = urlConnection.getInputStream();
-
-            BufferedReader br = new BufferedReader(new InputStreamReader(iStream));
-
-            StringBuffer sb  = new StringBuffer();
-
-            String line = "";
-            while( ( line = br.readLine())  != null){
-                sb.append(line);
-            }
-
-            data = sb.toString();
-
-            br.close();
-
-        }catch(Exception e){
-        }finally{
-            iStream.close();
-            urlConnection.disconnect();
-        }
-
-        return data;
-    }
 
     @Override
     public void onLocationChanged(Location location) {
@@ -232,8 +174,6 @@ public class ClinicMapFragment extends ActionBarFragment implements OnMapReadyCa
     public void onProviderDisabled(String provider) {
 
     }
-
-
 
 
 

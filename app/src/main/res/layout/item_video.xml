@@ -5,14 +5,11 @@
     android:padding="5dp"
     android:layout_weight="1">
 
-
-
-    <TextView
-        android:id="@+id/count_txt"
+    <com.android.volley.ui.NetworkImageView
+        android:id="@+id/video_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:background="@android:color/white"
-        android:text="ARTICLE"/>
+        android:src="@drawable/common_signin_btn_icon_dark"
+        android:scaleType="centerCrop"/>
 
 </FrameLayout>
