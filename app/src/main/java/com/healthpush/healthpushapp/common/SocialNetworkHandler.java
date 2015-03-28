@@ -1,16 +1,9 @@
 package com.healthpush.healthpushapp.common;
 
-import com.androidsocialnetworks.lib.SocialNetworkManager;
-import com.androidsocialnetworks.lib.impl.FacebookSocialNetwork;
-import com.androidsocialnetworks.lib.impl.TwitterSocialNetwork;
-
 /**
  * Created by aniruddhamazumdar on 27/03/15.
  */
 public class SocialNetworkHandler {
-
-    public TwitterSocialNetwork twitterSocialNetwork;
-    public FacebookSocialNetwork facebookSocialNetwork;
 
     private static SocialNetworkHandler instance;
     public static SocialNetworkHandler getInstance() {

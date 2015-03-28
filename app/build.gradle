@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.healthpush.healthpushapp"
-        minSdkVersion 14
+        minSdkVersion 9
         targetSdkVersion 21
         versionCode 1
         versionName "1.0"
@@ -27,7 +27,5 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.google.code.gson:gson:2.3'
     compile 'dev.dworks.libs:volleyplus:+'
-    compile ('com.github.androidsocialnetworks:library:0.3.7@aar') {
-        transitive = true
-    }
+    compile 'com.facebook.android:facebook-android-sdk:4.0.0'
 }

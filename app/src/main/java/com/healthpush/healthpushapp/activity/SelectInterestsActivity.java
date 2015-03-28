@@ -16,8 +16,6 @@ import android.widget.BaseAdapter;
 import android.widget.CheckedTextView;
 import android.widget.ListView;
 
-import com.androidsocialnetworks.lib.SocialPerson;
-import com.androidsocialnetworks.lib.listener.OnRequestSocialPersonCompleteListener;
 import com.healthpush.healthpushapp.R;
 import com.healthpush.healthpushapp.common.SocialNetworkHandler;
 import com.healthpush.healthpushapp.common.Utils;
@@ -99,19 +97,19 @@ public class SelectInterestsActivity extends ActionBarActivity {
     }
 
     private void showUserData() {
-        SocialNetworkHandler.getInstance().twitterSocialNetwork.requestCurrentPerson(new OnRequestSocialPersonCompleteListener() {
-            @Override
-            public void onRequestSocialPersonSuccess(int i, SocialPerson socialPerson) {
-//                socialPerson.avatarURL;
-//                socialPerson.name;
-//                socialPerson.profileURL;
-            }
-
-            @Override
-            public void onError(int i, String s, String s2, Object o) {
-
-            }
-        });
+//        SocialNetworkHandler.getInstance().twitterSocialNetwork.requestCurrentPerson(new OnRequestSocialPersonCompleteListener() {
+//            @Override
+//            public void onRequestSocialPersonSuccess(int i, SocialPerson socialPerson) {
+////                socialPerson.avatarURL;
+////                socialPerson.name;
+////                socialPerson.profileURL;
+//            }
+//
+//            @Override
+//            public void onError(int i, String s, String s2, Object o) {
+//
+//            }
+//        });
     }
 
     private void populateList() {
