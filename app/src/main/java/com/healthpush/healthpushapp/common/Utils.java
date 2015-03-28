@@ -62,6 +62,10 @@ public class Utils {
         editor.commit();
     }
 
+    public static String getFbAccessToken(SharedPreferences prefs) {
+        return prefs.getString("FB_TOKEN", "");
+    }
+
     public static Cache.Entry parseIgnoreCacheHeaders(NetworkResponse response) {
 
         long now = System.currentTimeMillis();

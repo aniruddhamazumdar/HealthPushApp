@@ -90,14 +90,16 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
 
     private void initControls() {
         findViewById(R.id.btn_twitter).setOnClickListener(this);
-        findViewById(R.id.btn_quora).setOnClickListener(this);
 
         facebook_login = (LoginButton) findViewById(R.id.facebook_login);
-        facebook_login.setReadPermissions("user_friends");
+        facebook_login.setReadPermissions("user_friends,user_profile");
 
         facebook_login.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
+                for (String str : loginResult.getRecentlyGrantedPermissions()) {
+                    Log.d("PERM", str);
+                }
                 Toast.makeText(LoginActivity.this, "Log in done!", Toast.LENGTH_SHORT).show();
                 startInterestsActivity();
             }
@@ -125,9 +127,6 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
         switch (v.getId()) {
             case R.id.btn_twitter:
                 loginWithTwitter();
-                break;
-            case R.id.btn_quora:
-                loginWithQuora();
                 break;
         }
     }
