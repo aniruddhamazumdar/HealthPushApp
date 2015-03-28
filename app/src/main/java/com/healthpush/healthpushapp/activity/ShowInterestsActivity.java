@@ -113,6 +113,10 @@ public class ShowInterestsActivity extends ActionBarActivity {
         Intent intent = new Intent(this, RevealCategory.class);
         intent.putExtra("category_bundle", bundle);
         startActivity(intent);
+
+//        Intent intent = new Intent(this, ArticlesActivity.class);
+//        intent.putExtra("CATEGORY", value);
+//        startActivity(intent);
     }
 
     private void showSelectedInterests() {

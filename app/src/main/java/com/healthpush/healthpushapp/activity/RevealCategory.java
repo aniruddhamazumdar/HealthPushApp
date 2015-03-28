@@ -18,8 +18,8 @@ import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.error.VolleyError;
+import com.healthpush.healthpushapp.HealthPushApplication;
 import com.healthpush.healthpushapp.R;
-import com.healthpush.healthpushapp.common.HealthPushApplication;
 import com.healthpush.healthpushapp.common.Utils;
 import com.healthpush.healthpushapp.model.FeedDesc;
 import com.healthpush.healthpushapp.request.PractoGsonRequest;
@@ -33,7 +33,6 @@ import java.util.ArrayList;
 public class RevealCategory extends ActionBarActivity {
 
     private RevealFragment mRevealFragment;
-    private ArticleFragment mArticleFragment;
     private LayoutInflater mLayoutInflater;
     private View articleView;
     private LinearLayout mArticleContainer;

@@ -1,27 +1,17 @@
-package com.healthpush.healthpushapp.common;
+package com.healthpush.healthpushapp;
 
-import android.app.Activity;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.RequestTickle;
 import com.android.volley.VolleyLog;
-import com.android.volley.cache.DiskLruBasedCache.ImageCacheParams;
 import com.android.volley.toolbox.Volley;
 import com.android.volley.toolbox.VolleyTickle;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
-import com.healthpush.healthpushapp.R;
 
-import java.util.ArrayList;
 import java.util.Locale;
 
 import dev.dworks.libs.actionbarplus.app.ActionBarApplication;
