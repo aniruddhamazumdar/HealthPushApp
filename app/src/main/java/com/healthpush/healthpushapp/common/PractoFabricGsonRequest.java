@@ -12,9 +12,12 @@ import com.android.volley.error.ParseError;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import com.healthpush.healthpushapp.HealthPushApplication;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
+
+import static com.healthpush.healthpushapp.HealthPushApplication.AUTH_HEADER;
 
 public class PractoFabricGsonRequest<T> extends PractoBaseRequest<T> {
 
@@ -51,9 +54,7 @@ public class PractoFabricGsonRequest<T> extends PractoBaseRequest<T> {
 			headers = new ArrayMap<String, String>();
 		}
 
-		if (!TextUtils.isEmpty(token)) {
-			headers.put(FABRIC_TOKEN_HEADER, token);
-		}
+        headers.put(AUTH_HEADER, HealthPushApplication.X_AUTH_TOKEN);
 		headers.put(DROID_HEADER, "android");
 		headers.put(ACCEPT, ACCEPT_TYPE_JSON);
 	}

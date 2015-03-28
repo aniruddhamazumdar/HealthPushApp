@@ -67,6 +67,12 @@
 
         <activity android:name=".activity.CheckInActivity">
         </activity>
+
+        <activity android:name=".activity.ChooseCategoryActivity">
+        </activity>
+
+        <activity android:name=".activity.ShareActivity">
+        </activity>
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />

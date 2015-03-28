@@ -6,6 +6,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.healthpush.healthpushapp.R;
+import com.healthpush.healthpushapp.model.CategorySliced;
 import com.healthpush.healthpushapp.model.FeedDesc;
 import com.squareup.picasso.Picasso;
 
@@ -28,7 +29,7 @@ public class ArticleActivity extends ActionBarActivity {
         initControl();
         if (args != null){
 
-            FeedDesc.Feeds feedDesc = (FeedDesc.Feeds) args.getSerializable("FEED_DESC");
+            CategorySliced.ArticleFeed feedDesc = (CategorySliced.ArticleFeed) args.getSerializable("FEED_DESC");
             if (feedDesc != null){
                 setDescription(feedDesc);
             }
@@ -43,7 +44,7 @@ public class ArticleActivity extends ActionBarActivity {
     }
 
 
-    private void setDescription(FeedDesc.Feeds desc){
+    private void setDescription(CategorySliced.ArticleFeed desc){
 
         Picasso.with(this).load(desc.image).placeholder(getResources().getDrawable(R.drawable.common_signin_btn_icon_normal_dark)).error(getResources().getDrawable(R.drawable.common_signin_btn_icon_normal_dark)).into(mDescImage);
         mDescTitle.setText(desc.title);

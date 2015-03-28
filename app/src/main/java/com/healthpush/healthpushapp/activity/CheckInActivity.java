@@ -51,6 +51,9 @@ public class CheckInActivity extends ActionBarActivity implements View.OnClickLi
                 break;
 
             case R.id.share_container:
+                Intent shareIntent = new Intent(this,ChooseCategoryActivity.class);
+                startActivity(shareIntent);
+
                 break;
 
             case R.id.interest_btn:
@@ -67,10 +70,10 @@ public class CheckInActivity extends ActionBarActivity implements View.OnClickLi
 
                 break;
 
-            case R.id.checkin_btn:
+            case R.id.network_btn:
 
-                Intent checkInIntent = new Intent(this,CheckInActivity.class);
-                startActivity(checkInIntent);
+                Intent networkIntent = new Intent(this,NetworkActivity.class);
+                startActivity(networkIntent);
                 finish();
 
                 break;

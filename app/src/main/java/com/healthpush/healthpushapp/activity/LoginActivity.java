@@ -167,6 +167,7 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
 
                             mPrefs.edit().putString("ACCESS_TOKEN", object.getFbId()).commit();
                             mPrefs.edit().putString("X_AUTH", object.getXAuthToken()).commit();
+                            HealthPushApplication.X_AUTH_TOKEN = object.getXAuthToken();
 
                             startInterestsActivity();
                         } catch(Exception e) {
