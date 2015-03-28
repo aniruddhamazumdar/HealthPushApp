@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,7 +27,7 @@ import com.healthpush.healthpushapp.common.Utils;
 /**
  * Created by aniruddhamazumdar on 27/03/15.
  */
-public class NetworkActivity extends ActionBarActivity {
+public class NetworkActivity extends ActionBarActivity implements View.OnClickListener {
 
     private Bundle mArgs;
     private SharedPreferences mPrefs;
@@ -39,6 +40,9 @@ public class NetworkActivity extends ActionBarActivity {
 
     private final int REQ_SELECT_INTERESTS = 4242;
     private final int REQ_LOGIN = 2424;
+    private Button mProfileBtn;
+    private Button mInterest;
+    private Button mCheckInBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +86,12 @@ public class NetworkActivity extends ActionBarActivity {
 
     private void initControls() {
         list_interests_seleceted = (ListView) findViewById(R.id.list_interests_selected);
+        mProfileBtn = (Button) findViewById(R.id.profile_btn);
+        mProfileBtn.setOnClickListener(this);
+        mInterest = (Button) findViewById(R.id.interest_btn);
+        mInterest.setOnClickListener(this);
+        mCheckInBtn = (Button) findViewById(R.id.checkin_btn);
+        mCheckInBtn.setOnClickListener(this);
     }
 
     private void initData() {
@@ -146,6 +156,32 @@ public class NetworkActivity extends ActionBarActivity {
         });
     }
 
+    @Override
+    public void onClick(View v) {
+
+        switch (v.getId()){
+            case R.id.profile_btn:
+                Intent profileIntent = new Intent(this,UserProfileActivity.class);
+                startActivity(profileIntent);
+                finish();
+                break;
+
+            case R.id.interest_btn:
+
+                Intent interesetIntent = new Intent(this,RevealCategory.class);
+                startActivity(interesetIntent);
+                finish();
+
+                break;
+
+            case R.id.checkin_btn:
+
+                Intent checkInIntent = new Intent(this,CheckInActivity.class);
+                startActivity(checkInIntent);
+                finish();
+                break;
+        }
+    }
 
 
     private class InterestsAdapter extends BaseAdapter {

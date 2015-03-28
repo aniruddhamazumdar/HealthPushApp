@@ -64,6 +64,9 @@
         <activity android:name=".activity.ArticleActivity">
         </activity>
 
+
+        <activity android:name=".activity.CheckInActivity">
+        </activity>
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />

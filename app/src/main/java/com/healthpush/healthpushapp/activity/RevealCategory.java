@@ -314,21 +314,24 @@ public class RevealCategory extends ActionBarActivity implements View.OnClickLis
 
         switch (v.getId()){
             case R.id.profile_btn:
-//                Intent profileIntent = new Intent(this,Por);
-//                startActivity(profileIntent);
-//                finish();
+                Intent profileIntent = new Intent(this,UserProfileActivity.class);
+                startActivity(profileIntent);
+                finish();
                 break;
 
             case R.id.network_btn:
-//
-//                Intent networkIntent = new Intent(this,Por);
-//                startActivity(networkIntent);
-//                finish();
+
+                Intent networkIntent = new Intent(this,NetworkActivity.class);
+                startActivity(networkIntent);
+                finish();
 
                 break;
 
             case R.id.checkin_btn:
 
+                Intent checkInIntent = new Intent(this,CheckInActivity.class);
+                startActivity(checkInIntent);
+                finish();
 
                 break;
         }

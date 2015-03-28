@@ -6,6 +6,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
+import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -29,7 +31,7 @@ import java.util.ArrayList;
 /**
  * Created by aniruddhamazumdar on 28/03/15.
  */
-public class UserProfileActivity extends ActionBarActivity {
+public class UserProfileActivity extends ActionBarActivity implements View.OnClickListener {
 
     BezelImageView user_image;
     TextView user_name;
@@ -46,6 +48,9 @@ public class UserProfileActivity extends ActionBarActivity {
     CallbackManager mCallbackManager;
 
     ProgressDialog mDialog;
+    private Button mInterestBtn;
+    private Button mNetworkBtn;
+    private Button mCheckInBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +82,12 @@ public class UserProfileActivity extends ActionBarActivity {
         user_locations = (LinearLayout) findViewById(R.id.user_locations);
         user_following = (TextView) findViewById(R.id.user_following);
         user_followers = (TextView) findViewById(R.id.user_followers);
+        mInterestBtn = (Button) findViewById(R.id.interest_btn);
+        mInterestBtn.setOnClickListener(this);
+        mNetworkBtn = (Button) findViewById(R.id.network_btn);
+        mNetworkBtn.setOnClickListener(this);
+        mCheckInBtn = (Button) findViewById(R.id.checkin_btn);
+        mCheckInBtn.setOnClickListener(this);
     }
 
     private void initData() {
@@ -134,5 +145,32 @@ public class UserProfileActivity extends ActionBarActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         mCallbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.interest_btn:
+                Intent interestIntent = new Intent(this,RevealCategory.class);
+                startActivity(interestIntent);
+                finish();
+                break;
+
+            case R.id.network_btn:
+
+                Intent networkIntent = new Intent(this,NetworkActivity.class);
+                startActivity(networkIntent);
+                finish();
+
+                break;
+
+            case R.id.checkin_btn:
+
+                Intent checkInIntent = new Intent(this,CheckInActivity.class);
+                startActivity(checkInIntent);
+                finish();
+
+                break;
+        }
     }
 }
