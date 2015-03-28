@@ -1,7 +1,9 @@
 package com.healthpush.healthpushapp;
 
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
 import com.android.volley.Request;
@@ -39,6 +41,9 @@ public class HealthPushApplication extends ActionBarApplication {
     // Google client reference for enabling auto-suggest
     private GoogleApiClient mClient;
 
+    public static String FB_AUTH_TOKEN = "";
+    public static String X_AUTH_TOKEN = "";
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -48,6 +53,10 @@ public class HealthPushApplication extends ActionBarApplication {
             final PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), 0);
             APP_VERSION = info.versionName;
             APP_VERSION_CODE = info.versionCode;
+
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+            X_AUTH_TOKEN = preferences.getString("X_AUTH", "");
+
         } catch (NameNotFoundException e) {
             APP_VERSION = "Unknown";
             APP_VERSION_CODE = 0;

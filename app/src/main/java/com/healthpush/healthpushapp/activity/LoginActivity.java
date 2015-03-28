@@ -15,15 +15,26 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.error.VolleyError;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.healthpush.healthpushapp.HealthPushApplication;
 import com.healthpush.healthpushapp.R;
+import com.healthpush.healthpushapp.com.healthpush.healthpushapp.entity.FeedResponse;
+import com.healthpush.healthpushapp.common.PractoGsonRequest;
 import com.healthpush.healthpushapp.common.SocialNetworkHandler;
 import com.healthpush.healthpushapp.common.Utils;
+import com.healthpush.healthpushapp.model.TokenResponse;
+
+import org.json.JSONObject;
+
+import java.util.HashMap;
 
 public class LoginActivity extends ActionBarActivity implements View.OnClickListener {
 
@@ -97,13 +108,8 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
         facebook_login.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                Log.d("TOKEN ", loginResult.getAccessToken().getToken());
-                for (String str : loginResult.getRecentlyGrantedPermissions()) {
-                    Log.d("PERM", str);
-                }
-                Toast.makeText(LoginActivity.this, "Log in done!", Toast.LENGTH_SHORT).show();
-                startInterestsActivity();
                 // Make an API call to get and store APP TOKEN here
+                sendLoginData(loginResult.getAccessToken().getToken());
             }
 
             @Override
@@ -141,12 +147,39 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
         setResult(Activity.RESULT_OK);
         finish();
     }
+    private void sendLoginData(String accessToken) {
+        Log.d("TOKEN ", accessToken);
+        mProgressDialog.show();
 
-    private void storeLoginData() {
+        HashMap<String, String> params = new HashMap<String, String>();
+        params.put("fb_access_token", accessToken);
 
-    }
+        PractoGsonRequest<TokenResponse> request = new PractoGsonRequest<TokenResponse>(Request.Method.POST,
+                "https://6caa58a5.ngrok.com/fb_login", TokenResponse.class, "", params,
+                new Response.Listener<TokenResponse>() {
+                    @Override
+                    public void onResponse(TokenResponse object) {
+                        mProgressDialog.dismiss();
 
-    private void sendLoginData() {
+                        try {
 
+                            Log.d("X AUTH TOKEN", object.getXAuthToken());
+
+                            mPrefs.edit().putString("ACCESS_TOKEN", object.getFbId()).commit();
+                            mPrefs.edit().putString("X_AUTH", object.getXAuthToken()).commit();
+
+                            startInterestsActivity();
+                        } catch(Exception e) {
+                            Toast.makeText(LoginActivity.this, "Oops! Something's not right here, please try again!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                mProgressDialog.dismiss();
+                Toast.makeText(LoginActivity.this, "Oops! Something's not right here, please try again!", Toast.LENGTH_SHORT).show();
+            }
+        });
+        HealthPushApplication.getInstance().addToRequestQueue(request, "FEEDS");
     }
 }
