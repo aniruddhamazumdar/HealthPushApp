@@ -30,7 +30,16 @@ dependencies {
     compile 'com.google.code.gson:gson:2.3'
     compile 'dev.dworks.libs:actionbarplus:+'
     compile 'dev.dworks.libs:volleyplus:+'
-    compile('com.github.androidsocialnetworks:library:0.3.7@aar') {
-        transitive = true
-    }
+
+    compile 'com.facebook.android:facebook-android-sdk:4.0.0'
+
+//    compile('com.github.androidsocialnetworks:library:0.3.7@aar') {
+//        exclude group: 'com.google.android.gms', module: 'support-v4'
+//        transitive = true
+//    }
+    compile 'com.google.android.gms:play-services-maps:6.5.+'
+
+    compile 'com.google.android.gms:play-services-location:6.5.+'
+    compile 'com.google.android.gms:play-services-plus:6.5.+'
+    compile 'com.google.android.gms:play-services-appindexing:6.5.87'
 }

@@ -1,5 +1,6 @@
 package com.healthpush.healthpushapp.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -58,6 +59,7 @@ public class ShowInterestsActivity extends ActionBarActivity {
     }
 
     private void startInterestDetails() {
-        // Start interest details activity here.
+        Intent intent = new Intent(this,RevealCategory.class);
+        startActivity(intent);
     }
 }

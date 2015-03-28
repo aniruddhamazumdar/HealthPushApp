@@ -1,5 +1,7 @@
 package com.healthpush.healthpushapp.common;
 
+import android.app.Activity;
+
 import com.android.volley.Cache;
 import com.android.volley.NetworkResponse;
 import com.android.volley.toolbox.HttpHeaderParser;
@@ -42,5 +44,12 @@ public class Utils {
         entry.responseHeaders = headers;
 
         return entry;
+    }
+
+    public static boolean isActivityAlive(Activity activity) {
+        if (null == activity || (null != activity && activity.isFinishing())) {
+            return false;
+        }
+        return true;
     }
 }

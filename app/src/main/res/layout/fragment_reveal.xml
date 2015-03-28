@@ -4,32 +4,31 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-
     <ScrollView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/scrollView" >
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <FrameLayout
-            android:id="@+id/article_container"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="400dp"/>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <FrameLayout
-            android:id="@+id/establishment_container"
-            android:layout_width="match_parent"
-            android:layout_height="400dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Articles"/>
 
+            <LinearLayout
+                android:id="@+id/articles_conatiner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"/>
 
-        <FrameLayout
-            android:id="@+id/people_container"
-            android:layout_width="match_parent"
-            android:layout_height="400dp"/>
+        </LinearLayout>
+
 
     </ScrollView>
-
-
-
 
 
 </LinearLayout>

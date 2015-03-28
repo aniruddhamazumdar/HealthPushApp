@@ -5,12 +5,15 @@ import java.io.Serializable;
 /**
  * Created by ravikiran on 27/03/15.
  */
-public class Article{
+public class Article implements  Serializable{
 
-
-    public class ArticleData implements Serializable{
+    public ArticleData articleData = new ArticleData();
+    public static class ArticleData implements Serializable{
         public String name = "";
         public String url = "";
     }
+
+
+
 
 }

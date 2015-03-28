@@ -1,7 +1,9 @@
 package com.healthpush.healthpushapp.activity;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.database.Cursor;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
@@ -14,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -26,16 +29,22 @@ import com.healthpush.healthpushapp.model.Article;
 import com.healthpush.healthpushapp.request.PractoGsonRequest;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import dev.dworks.libs.actionbarplus.ActionBarFragment;
 import dev.dworks.libs.actionbarplus.app.ActionBarGridFragment;
 
 /**
  * Created by ravikiran on 27/03/15.
  */
-public class ArticleFragment extends ActionBarGridFragment implements Response.ErrorListener, Response.Listener<Article> {
+public class ArticleFragment extends ActionBarFragment implements Response.ErrorListener, Response.Listener<Article> {
 
 
     private View root;
     private ArticleAdapter mAdapter;
+    private ArrayList<Article.ArticleData> lists;
+    private GridView mGrid;
 
     public static ArticleFragment show(FragmentManager fm, Bundle args,int container) {
         final FragmentTransaction ft = fm.beginTransaction();
@@ -51,17 +60,16 @@ public class ArticleFragment extends ActionBarGridFragment implements Response.E
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         root = inflater.inflate(R.layout.fragment_articles, container, false);
+        mGrid = (GridView) root.findViewById(R.id.grid);
+
         return root;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        super.onActivityCreated(savedInstanceState);
             mAdapter = new ArticleAdapter(getActionBarActivity(), R.layout.item_article);
-            mAdapter.notifyDataSetChanged();
-            setGridAdapter(mAdapter);
-            setGridShown(false);
+            mGrid.setAdapter(mAdapter);
             restartLoading();
     }
 
@@ -69,6 +77,17 @@ public class ArticleFragment extends ActionBarGridFragment implements Response.E
     private void restartLoading(){
         if (mAdapter != null){
             //getArticles();
+            lists = new ArrayList<Article.ArticleData>();
+            Article.ArticleData articleData = new Article.ArticleData();
+            articleData.name = "kira";
+            lists.add(articleData);
+            articleData = new Article.ArticleData();
+            articleData.name = "ravi";
+            lists.add(articleData);
+
+            mAdapter.setData(lists,true);
+
+
         }
     }
 
@@ -92,6 +111,7 @@ public class ArticleFragment extends ActionBarGridFragment implements Response.E
 
         if (article != null){
 
+
         }
 
     }
@@ -108,6 +128,19 @@ public class ArticleFragment extends ActionBarGridFragment implements Response.E
             this.inflater = LayoutInflater.from(context);
         }
 
+        @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+        public void setData(List<Article.ArticleData> data, boolean add) {
+            if (!add) {
+                clear();
+            }
+                if (data != null) {
+                    for (Article.ArticleData article : data) {
+                        add(article);
+                    }
+                }
+
+        }
+
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
@@ -117,7 +150,7 @@ public class ArticleFragment extends ActionBarGridFragment implements Response.E
             articleTxt = (TextView) convertView.findViewById(R.id.article_txt);
             articleImage = (ImageView) convertView.findViewById(R.id.article_image);
             Article.ArticleData data = (Article.ArticleData) getItem(position);
-            Picasso.with(mContext).load(data.url).into(articleImage);
+         //   Picasso.with(mContext).load(data.url).into(articleImage);
             articleTxt.setText(data.name);
 
             return convertView;
