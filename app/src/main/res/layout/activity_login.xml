@@ -30,22 +30,11 @@
         android:padding="16dp"
         android:text="Quora" />
 
-    <Button
-        android:id="@+id/btn_facebook"
+    <com.facebook.login.widget.LoginButton
+        android:id="@+id/facebook_login"
         android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:padding="16dp"
-        android:text="Facebook" />
-
-    <TextView
-        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="------------------OR------------------" />
-
-    <TextView
-        android:id="@+id/tv_skip_login"
-        android:text="SKIP"
-        android:textColor="@android:color/holo_blue_light"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp" />
 </LinearLayout>

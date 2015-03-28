@@ -1,26 +1,28 @@
 package com.healthpush.healthpushapp.activity;
 
+import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckedTextView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.healthpush.healthpushapp.R;
 import com.healthpush.healthpushapp.common.SimpleSectionedListAdapter;
 import com.healthpush.healthpushapp.common.Utils;
+<<<<<<< HEAD
+=======
+import com.healthpush.healthpushapp.common.SimpleSectionedListAdapter;
+>>>>>>> 1df987c6d41fea5f44245321750779451c403b16
 
 import java.util.ArrayList;
 
@@ -31,8 +33,10 @@ import java.util.ArrayList;
 public class SelectInterestsActivity extends ActionBarActivity {
 
     private String[] mInterests = new String[]{
-            "Football", "Swimming", "Running",
-            "Yoga", "Gym", "Aerobics"};
+            "Meditation", "Spa", "Saloon",
+            "Gym", "Yoga",
+            "Football", "Squash", "Swimming", "Running", "Cycling", "Tennis", "Badminton", "Volleyball", "BasketBall", "Walking",
+            "Weight Loss"};
     private ArrayList<Integer> mHeaderPosList = new ArrayList<>();
 
     private LayoutInflater mInflater;
@@ -52,7 +56,7 @@ public class SelectInterestsActivity extends ActionBarActivity {
         setContentView(R.layout.activity_select_interests);
 
         mInflater = LayoutInflater.from(this);
-        mPrefs = getPreferences(MODE_PRIVATE);
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         if (savedInstanceState != null) {
             mArgs = savedInstanceState;
@@ -80,7 +84,7 @@ public class SelectInterestsActivity extends ActionBarActivity {
 
     private void initControls() {
         interest_list = (ListView) findViewById(R.id.interest_list);
-        interest_list.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+        interest_list.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
         user_layout = findViewById(R.id.user_layout);
     }
@@ -96,21 +100,47 @@ public class SelectInterestsActivity extends ActionBarActivity {
     }
 
     private void showUserData() {
+<<<<<<< HEAD
+=======
+//        SocialNetworkHandler.getInstance().twitterSocialNetwork.requestCurrentPerson(new OnRequestSocialPersonCompleteListener() {
+//            @Override
+//            public void onRequestSocialPersonSuccess(int i, SocialPerson socialPerson) {
+////                socialPerson.avatarURL;
+////                socialPerson.name;
+////                socialPerson.profileURL;
+//            }
+//
+//            @Override
+//            public void onError(int i, String s, String s2, Object o) {
+//
+//            }
+//        });
+>>>>>>> 1df987c6d41fea5f44245321750779451c403b16
     }
 
     private void populateList() {
         mHeaderPosList.add(0);
         mHeaderPosList.add(3);
+        mHeaderPosList.add(5);
+        mHeaderPosList.add(15);
 
         mAdapter = new InterestsAdapter(this);
-        SimpleSectionedListAdapter.Section[] sections = new SimpleSectionedListAdapter.Section[2];
-        sections[0] = new SimpleSectionedListAdapter.Section(mHeaderPosList.get(0), "SPORTS", 0);
-        sections[1] = new SimpleSectionedListAdapter.Section(mHeaderPosList.get(1), "WELLNESS", 0);
+        SimpleSectionedListAdapter.Section[] sections = new SimpleSectionedListAdapter.Section[4];
+        sections[0] = new SimpleSectionedListAdapter.Section(mHeaderPosList.get(0), "WELLNESS AND BEAUTY", 0);
+        sections[1] = new SimpleSectionedListAdapter.Section(mHeaderPosList.get(1), "FITNESS", 0);
+        sections[2] = new SimpleSectionedListAdapter.Section(mHeaderPosList.get(2), "SPORTS", 0);
+        sections[3] = new SimpleSectionedListAdapter.Section(mHeaderPosList.get(3), "PERSONAL GOALS", 0);
 
         mSectionedAdapter = new SimpleSectionedListAdapter(this, R.layout.section_layout, mAdapter);
         mSectionedAdapter.setSections(sections);
 
         interest_list.setAdapter(mSectionedAdapter);
+
+        checkSelectedInterests();
+    }
+
+    private void checkSelectedInterests() {
+        String[] interests = Utils.getUserInterests(mPrefs);
     }
 
     private void showInterestsActivity() {
@@ -121,7 +151,7 @@ public class SelectInterestsActivity extends ActionBarActivity {
         for (int i = 0; i < checked.size(); i++) {
             // Item position in adapter
             int position = checked.keyAt(i);
-            if (!mHeaderPosList.contains(position)) {
+            if (!mHeaderPosList.contains(position + 1)) {
                 // Add sport if it is checked i.e.) == TRUE!
                 if (checked.valueAt(i))
                     selectedItems.add(String.valueOf(mSectionedAdapter.getItem(position)));
@@ -133,11 +163,12 @@ public class SelectInterestsActivity extends ActionBarActivity {
             outputStrArr[i] = selectedItems.get(i);
         }
 
-        bundle.putStringArray("SELECTED_INTERESTS", outputStrArr);
+        Utils.updateUserState(mPrefs, Utils.UserState.SELECTED_INTERESTS);
 
-        Intent intent = new Intent(this, ShowInterestsActivity.class);
-        intent.putExtras(bundle);
-        startActivity(intent);
+        Utils.updateUserInterests(mPrefs, outputStrArr);
+
+        setResult(Activity.RESULT_OK);
+        finish();
     }
 
     private class InterestsAdapter extends BaseAdapter {

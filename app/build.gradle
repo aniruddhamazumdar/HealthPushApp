@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.healthpush.healthpushapp"
-        minSdkVersion 14
+        minSdkVersion 9
         targetSdkVersion 21
         versionCode 1
         versionName "1.0"
@@ -23,20 +23,14 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.android.support:support-v4:21+'
-    compile 'com.android.support:cardview-v7:+'
-    compile 'com.android.support:appcompat-v7:21+'
-    compile 'com.android.support:recyclerview-v7:21.0.+'
     compile 'com.android.support:appcompat-v7:21.0.3'
-    compile 'com.google.code.gson:gson:2.3'
     compile 'dev.dworks.libs:actionbarplus:+'
+    compile 'com.google.code.gson:gson:2.3'
     compile 'dev.dworks.libs:volleyplus:+'
 
     compile 'com.facebook.android:facebook-android-sdk:4.0.0'
 
-//    compile('com.github.androidsocialnetworks:library:0.3.7@aar') {
-//        exclude group: 'com.google.android.gms', module: 'support-v4'
-//        transitive = true
-//    }
+
     compile 'com.google.android.gms:play-services-maps:6.5.+'
 
     compile 'com.google.android.gms:play-services-location:6.5.+'
