@@ -19,6 +19,7 @@ import android.widget.ListView;
 import com.healthpush.healthpushapp.R;
 import com.healthpush.healthpushapp.common.SimpleSectionedListAdapter;
 import com.healthpush.healthpushapp.common.Utils;
+import com.healthpush.healthpushapp.common.SimpleSectionedListAdapter;
 
 import java.util.ArrayList;
 
@@ -96,6 +97,7 @@ public class SelectInterestsActivity extends ActionBarActivity {
     }
 
     private void showUserData() {
+
     }
 
     private void populateList() {
