@@ -105,7 +105,7 @@ public class RevealCategory extends ActionBarActivity {
 
     private void setArticles(final String category){
         //getArticles();
-        String url = "https://6caa58a5.ngrok.com/api/feed?";
+        String url = "https://6caa58a5.ngrok.com/api/feed";
         final ArrayMap<String, String> param = new ArrayMap<String, String>();
         param.put("type", "articles");
         param.put("category", category);
@@ -168,7 +168,7 @@ public class RevealCategory extends ActionBarActivity {
     private void setVideos(String category){
         //getArticles();
 
-        String url = "https://6caa58a5.ngrok.com/api/feed?";
+        String url = "https://6caa58a5.ngrok.com/api/feed";
         final ArrayMap<String, String> param = new ArrayMap<String, String>();
         param.put("type", "videos");
         param.put("category",category);

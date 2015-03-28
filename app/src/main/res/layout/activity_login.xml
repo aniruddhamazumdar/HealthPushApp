@@ -16,7 +16,8 @@
         android:text="LOGIN WITH:"
         android:textColor="@android:color/darker_gray"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp" />
+        android:layout_marginBottom="10dp"
+        android:visibility="gone" />
 
     <com.facebook.login.widget.LoginButton
         android:id="@+id/facebook_login"
@@ -32,5 +33,6 @@
         android:padding="16dp"
         android:text="Twitter"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp" />
+        android:layout_marginBottom="10dp"
+        android:visibility="gone" />
 </LinearLayout>

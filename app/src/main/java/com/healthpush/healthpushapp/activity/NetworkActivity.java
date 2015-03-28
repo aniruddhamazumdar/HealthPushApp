@@ -26,7 +26,7 @@ import com.healthpush.healthpushapp.common.Utils;
 /**
  * Created by aniruddhamazumdar on 27/03/15.
  */
-public class ShowInterestsActivity extends ActionBarActivity {
+public class NetworkActivity extends ActionBarActivity {
 
     private Bundle mArgs;
     private SharedPreferences mPrefs;
@@ -57,13 +57,27 @@ public class ShowInterestsActivity extends ActionBarActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_show_interests, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             finish();
             overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
             return true;
         }
+        if (item.getItemId() == R.id.action_profile) {
+            startProfileActivity();
+        }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void startProfileActivity() {
+        Intent intent = new Intent(this, UserProfileActivity.class);
+        startActivity(intent);
     }
 
     private void initControls() {

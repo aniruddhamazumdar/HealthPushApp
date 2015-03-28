@@ -43,7 +43,7 @@
         </activity>
 
 
-        <activity android:name=".activity.ShowInterestsActivity"
+        <activity android:name=".activity.NetworkActivity"
             android:label="Explore whats new" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -56,6 +56,9 @@
         </activity>
 
         <activity android:name=".activity.LoginActivity">
+        </activity>
+
+        <activity android:name=".activity.UserProfileActivity">
         </activity>
 
         <meta-data
