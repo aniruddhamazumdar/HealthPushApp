@@ -44,7 +44,7 @@
 
 
         <activity android:name=".activity.NetworkActivity"
-            android:label="Explore whats new" >
+            android:label="#My network" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

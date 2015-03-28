@@ -6,25 +6,23 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
+import android.text.TextUtils;
+import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
-import com.facebook.login.LoginManager;
-import com.facebook.login.LoginResult;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.error.VolleyError;
+import com.healthpush.healthpushapp.HealthPushApplication;
 import com.healthpush.healthpushapp.R;
 import com.healthpush.healthpushapp.common.BezelImageView;
+import com.healthpush.healthpushapp.common.PractoGsonRequest;
 import com.healthpush.healthpushapp.common.Utils;
+import com.healthpush.healthpushapp.model.ProfileResponse;
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 /**
  * Created by aniruddhamazumdar on 28/03/15.
@@ -35,6 +33,7 @@ public class UserProfileActivity extends ActionBarActivity {
     TextView user_name;
     TextView user_score;
     TextView user_bio;
+    TextView user_interests;
     LinearLayout user_articles;
     LinearLayout user_locations;
     TextView user_following;
@@ -43,26 +42,32 @@ public class UserProfileActivity extends ActionBarActivity {
     SharedPreferences mPrefs;
     String[] mSelectedInterests;
 
-    CallbackManager mCallbackManager;
-
     ProgressDialog mDialog;
+
+    String picture;
+    String bio;
+    String name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.user_profile);
 
-        mCallbackManager = CallbackManager.Factory.create();
         mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 
+        picture = mPrefs.getString("PROFILE_PIC", "");
+        name = mPrefs.getString("NAME", "");
+        bio = mPrefs.getString("BIO", "");
+
         mSelectedInterests = Utils.getUserInterests(mPrefs);
+
+        Log.d("PICTURE", "Picture in Profile " + picture);
 
         initControls();
 
         mDialog = new ProgressDialog(this);
         mDialog.setIndeterminate(true);
-        mDialog.setMessage("loading data...");
+        mDialog.setMessage("loading profile...");
         mDialog.setCancelable(false);
 
         initData();
@@ -73,66 +78,63 @@ public class UserProfileActivity extends ActionBarActivity {
         user_name = (TextView) findViewById(R.id.profile_name);
         user_score = (TextView) findViewById(R.id.user_score);
         user_bio = (TextView) findViewById(R.id.user_bio);
-        user_articles = (LinearLayout) findViewById(R.id.user_articles);
+        user_interests = (TextView) findViewById(R.id.user_interests);
         user_locations = (LinearLayout) findViewById(R.id.user_locations);
         user_following = (TextView) findViewById(R.id.user_following);
         user_followers = (TextView) findViewById(R.id.user_followers);
     }
 
     private void initData() {
-        ArrayList<String> perms = new ArrayList<>();
-        perms.add("public_profile");
+        user_name.setText(name);
+        if (!TextUtils.isEmpty(picture)) {
+            Picasso.with(this)
+                    .load(picture)
+                    .placeholder(R.drawable.doctor_image)
+                    .error(R.drawable.doctor_image)
+                    .into(user_image);
+        }
+        user_bio.setText("Software Engg. at Practo");
 
-        LoginManager.getInstance().logInWithReadPermissions(this, perms);
-        LoginManager.getInstance().registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+        mDialog.show();
+
+        PractoGsonRequest<ProfileResponse> request = new PractoGsonRequest<ProfileResponse>(Request.Method.GET,
+                "https://6caa58a5.ngrok.com/profile", ProfileResponse.class, "", null,
+                new Response.Listener<ProfileResponse>() {
+                    @Override
+                    public void onResponse(ProfileResponse profile) {
+                        mDialog.dismiss();
+
+                        setProfile(profile);
+                    }
+                }, new Response.ErrorListener() {
             @Override
-            public void onSuccess(LoginResult loginResult) {
-                GraphRequest request = GraphRequest.newMeRequest(
-                        loginResult.getAccessToken(),
-                        new GraphRequest.GraphJSONObjectCallback() {
-                            @Override
-                            public void onCompleted(
-                                    JSONObject object,
-                                    GraphResponse response) {
-                                try {
-                                    String photo = object.getString("picture");
-                                    String name = object.getString("first_name") + " "
-                                            + object.getString("last_name");
-                                    String bio = object.getString("bio");
-
-                                    Picasso.with(UserProfileActivity.this)
-                                            .load(photo)
-                                            .placeholder(R.drawable.doctor_image)
-                                            .error(R.drawable.doctor_image)
-                                            .into(user_image);
-                                    user_name.setText(name);
-                                    user_bio.setText(bio);
-                                } catch (Exception e) {
-
-                                }
-                            }
-                        });
-                Bundle parameters = new Bundle();
-                parameters.putString("fields", "id,name,link, photo");
-                request.setParameters(parameters);
-                request.executeAsync();
-            }
-
-            @Override
-            public void onCancel() {
-
-            }
-
-            @Override
-            public void onError(FacebookException e) {
-
+            public void onErrorResponse(VolleyError volleyError) {
+                mDialog.dismiss();
+                Toast.makeText(UserProfileActivity.this, "Oops! Something's not right here, please try again!", Toast.LENGTH_SHORT).show();
             }
         });
+        HealthPushApplication.getInstance().addToRequestQueue(request, "FEEDS");
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        mCallbackManager.onActivityResult(requestCode, resultCode, data);
+    private void setProfile(ProfileResponse profile) {
+        if (profile != null) {
+            String str = "";
+            for (String intr : profile.getInterests()) {
+                str += intr + " - ";
+            }
+            if (str.length() > 0) {
+                str = str.substring(0, str.length() - 3);
+            }
+            user_interests.setText(str);
+
+            user_score.setText(profile.getPoints());
+            user_name.setText(profile.getName());
+
+            ((TextView) findViewById(R.id.title1)).setText(profile.getActivities().get(0).getActivity());
+            ((TextView) findViewById(R.id.subtitle1)).setText(profile.getActivities().get(0).getPlaceName());
+
+            ((TextView) findViewById(R.id.title2)).setText(profile.getActivities().get(1).getActivity());
+            ((TextView) findViewById(R.id.subtitle2)).setText(profile.getActivities().get(1).getPlaceName());
+        }
     }
 }

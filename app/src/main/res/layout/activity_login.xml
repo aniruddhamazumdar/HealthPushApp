@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,28 +11,26 @@
     tools:context="com.healthpush.healthpushapp.activity.LoginActivity">
 
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="LOGIN WITH:"
-        android:textColor="@android:color/darker_gray"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:visibility="gone" />
+        android:layout_marginTop="50dp"
+        android:layout_gravity="top|center_horizontal"
+        android:textSize="36sp"
+        android:text="Practo Fit" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:layout_gravity="top|center_horizontal"
+        android:textSize="24sp"
+        android:text="For your health activity" />
+
 
     <com.facebook.login.widget.LoginButton
         android:id="@+id/facebook_login"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
-        android:layout_gravity="left"
-        android:layout_marginTop="10dp" />
-
-    <Button
-        android:id="@+id/btn_twitter"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:padding="16dp"
-        android:text="Twitter"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:visibility="gone" />
-</LinearLayout>
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="20dp" />
+</FrameLayout>

@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckedTextView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.healthpush.healthpushapp.R;
 import com.healthpush.healthpushapp.common.SimpleSectionedListAdapter;
@@ -54,6 +55,9 @@ public class SelectInterestsActivity extends ActionBarActivity {
 
         mInflater = LayoutInflater.from(this);
         mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        String name = mPrefs.getString("NAME", "");
+        Toast.makeText(this, "Hi! " + name, Toast.LENGTH_SHORT).show();
 
         if (savedInstanceState != null) {
             mArgs = savedInstanceState;

@@ -22,6 +22,9 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.Profile;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.healthpush.healthpushapp.HealthPushApplication;
@@ -34,7 +37,9 @@ import com.healthpush.healthpushapp.model.TokenResponse;
 
 import org.json.JSONObject;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 public class LoginActivity extends ActionBarActivity implements View.OnClickListener {
 
@@ -52,6 +57,9 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
     private LoginButton facebook_login;
 
     private static final int REQ_FB_LOGIN = 5050;
+    private String name;
+    private String picture;
+    private String bio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,16 +108,41 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
     }
 
     private void initControls() {
-        findViewById(R.id.btn_twitter).setOnClickListener(this);
-
         facebook_login = (LoginButton) findViewById(R.id.facebook_login);
         facebook_login.setReadPermissions("user_friends,public_profile");
 
         facebook_login.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
-            public void onSuccess(LoginResult loginResult) {
-                // Make an API call to get and store APP TOKEN here
-                sendLoginData(loginResult.getAccessToken().getToken());
+            public void onSuccess(final LoginResult loginResult) {
+                // Read fb related data here and store locally
+                GraphRequest request = GraphRequest.newMeRequest(
+                        loginResult.getAccessToken(),
+                        new GraphRequest.GraphJSONObjectCallback() {
+                            @Override
+                            public void onCompleted(
+                                    JSONObject object,
+                                    GraphResponse response) {
+                                try {
+                                    JSONObject obj = new JSONObject(response.getRawResponse());
+                                    name = obj.getString("name");
+                                    bio = obj.getString("bio");
+                                    JSONObject pic = obj.getJSONObject("picture");
+                                    JSONObject data = pic.getJSONObject("data");
+                                    picture = data.getString("url");
+
+                                    Log.d("PICTURE ", "FROM JSON OBJECT " + picture);
+                                } catch(Exception e) {
+
+                                }
+
+                                // Make an API call to get and store APP TOKEN here
+                                sendLoginData(loginResult.getAccessToken().getToken());
+                            }
+                        });
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "id,name,link,picture,bio");
+                request.setParameters(parameters);
+                request.executeAsync();
             }
 
             @Override
@@ -133,13 +166,7 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btn_twitter:
-                loginWithTwitter();
-                break;
         }
-    }
-
-    private void loginWithTwitter() {
     }
 
     private void startInterestsActivity() {
@@ -147,6 +174,7 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
         setResult(Activity.RESULT_OK);
         finish();
     }
+
     private void sendLoginData(String accessToken) {
         Log.d("TOKEN ", accessToken);
         mProgressDialog.show();
@@ -163,10 +191,16 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
 
                         try {
 
-                            Log.d("X AUTH TOKEN", object.getXAuthToken());
+                            Log.d("PICTURE", "PICTURE WHILE LOGGED IN " + picture);
 
-                            mPrefs.edit().putString("ACCESS_TOKEN", object.getFbId()).commit();
-                            mPrefs.edit().putString("X_AUTH", object.getXAuthToken()).commit();
+                            SharedPreferences.Editor editor = mPrefs.edit();
+                            editor.putString("ACCESS_TOKEN", object.getFbId());
+                            editor.putString("X_AUTH", object.getXAuthToken());
+                            editor.putString("NAME", name);
+                            editor.putString("PROFILE_PIC", picture);
+                            editor.putString("BIO", bio);
+                            editor.commit();
+                            HealthPushApplication.X_AUTH_TOKEN = object.getXAuthToken();
 
                             startInterestsActivity();
                         } catch(Exception e) {
