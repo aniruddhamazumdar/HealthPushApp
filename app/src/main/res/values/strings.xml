@@ -5,4 +5,6 @@
 
     <string name="login_msg">Login with:</string>
     <string name="action_settings">Settings</string>
+
+    <string name="facebook_app_id">793331237420253</string>
 </resources>

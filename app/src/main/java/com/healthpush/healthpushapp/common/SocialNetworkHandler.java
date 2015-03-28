@@ -1,6 +1,7 @@
 package com.healthpush.healthpushapp.common;
 
 import com.androidsocialnetworks.lib.SocialNetworkManager;
+import com.androidsocialnetworks.lib.impl.FacebookSocialNetwork;
 import com.androidsocialnetworks.lib.impl.TwitterSocialNetwork;
 
 /**
@@ -9,6 +10,7 @@ import com.androidsocialnetworks.lib.impl.TwitterSocialNetwork;
 public class SocialNetworkHandler {
 
     public TwitterSocialNetwork twitterSocialNetwork;
+    public FacebookSocialNetwork facebookSocialNetwork;
 
     private static SocialNetworkHandler instance;
     public static SocialNetworkHandler getInstance() {

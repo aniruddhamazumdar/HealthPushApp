@@ -1,10 +1,13 @@
 package com.healthpush.healthpushapp.activity;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,9 +30,6 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
 
     private SharedPreferences mPrefs;
 
-    private Button btn_twitter;
-    private TextView tv_skip_login;
-
     private SocialNetworkManager mSocialNetworkManager;
 
     private ProgressDialog mProgressDialog;
@@ -40,7 +40,7 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        mPrefs = getPreferences(MODE_PRIVATE);
+        mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         initControls();
 
@@ -79,8 +79,9 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
     }
 
     private void initControls() {
-        btn_twitter = (Button) findViewById(R.id.btn_twitter);
-        btn_twitter.setOnClickListener(this);
+        findViewById(R.id.btn_twitter).setOnClickListener(this);
+        findViewById(R.id.btn_facebook).setOnClickListener(this);
+        findViewById(R.id.btn_quora).setOnClickListener(this);
     }
 
     @Override
@@ -90,13 +91,10 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
                 loginWithTwitter();
                 break;
             case R.id.btn_facebook:
-                loginWithTwitter();
+                loginWithFaceBook();
                 break;
             case R.id.btn_quora:
-                loginWithTwitter();
-                break;
-            case R.id.tv_skip_login:
-                loginWithTwitter();
+                loginWithQuora();
                 break;
         }
     }
@@ -156,7 +154,53 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
     }
 
     private void loginWithFaceBook() {
+        mProgressDialog.show();
 
+        mSocialNetworkManager = (SocialNetworkManager) getSupportFragmentManager().findFragmentByTag(SOCIAL_NETWORK_TAG);
+
+        if (mSocialNetworkManager == null) {
+
+            mSocialNetworkManager = SocialNetworkManager.Builder.from(this)
+                .facebook()
+                .build();
+            getSupportFragmentManager().beginTransaction().add(mSocialNetworkManager, SOCIAL_NETWORK_TAG).commit();
+
+            mSocialNetworkManager.setOnInitializationCompleteListener(new SocialNetworkManager.OnInitializationCompleteListener() {
+                @Override
+                public void onSocialNetworkManagerInitialized() {
+
+                    SocialNetworkHandler.getInstance().facebookSocialNetwork = mSocialNetworkManager.getFacebookSocialNetwork();
+
+                    if (SocialNetworkHandler.getInstance().facebookSocialNetwork != null
+                            && SocialNetworkHandler.getInstance().facebookSocialNetwork.isConnected()) {
+
+
+                        mProgressDialog.dismiss();
+                        // Move to profile page and show data
+                        startInterestsActivity();
+
+
+                    } else {
+
+                        SocialNetworkHandler.getInstance().facebookSocialNetwork.requestLogin(new OnLoginCompleteListener() {
+                            @Override
+                            public void onLoginSuccess(int socialNetworkID) {
+                                mProgressDialog.dismiss();
+
+                                Log.d("", "Facebook logged in " + SocialNetworkHandler.getInstance().facebookSocialNetwork.getAccessToken().token);
+                                startInterestsActivity();
+                            }
+
+                            @Override
+                            public void onError(int socialNetworkID, String requestID, String errorMessage, Object data) {
+                                mProgressDialog.dismiss();
+                                Toast.makeText(LoginActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                }
+            });
+        }
     }
 
     private void loginWithQuora() {
@@ -164,7 +208,16 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
     }
 
     private void startInterestsActivity() {
-        Intent intent = new Intent(this, SelectInterestsActivity.class);
-        startActivity(intent);
+        Utils.updateUserState(mPrefs, Utils.UserState.LOGGED_IN);
+        setResult(Activity.RESULT_OK);
+        finish();
+    }
+
+    private void storeLoginData() {
+
+    }
+
+    private void sendLoginData() {
+
     }
 }
