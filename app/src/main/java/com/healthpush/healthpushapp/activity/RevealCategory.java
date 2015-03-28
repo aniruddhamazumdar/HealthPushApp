@@ -130,7 +130,7 @@ public class RevealCategory extends ActionBarActivity implements View.OnClickLis
 
         String url = "https://6caa58a5.ngrok.com/api/feed";
         final ArrayMap<String, String> param = new ArrayMap<String, String>();
-        param.put("category", "yoga");
+        param.put("category", category.toLowerCase());
 
         PractoFabricGsonRequest<CategorySliced> request = new PractoFabricGsonRequest<CategorySliced>(Request.Method.GET,
                 url,
@@ -174,6 +174,7 @@ public class RevealCategory extends ActionBarActivity implements View.OnClickLis
 
 
     private void setVideo(CategorySliced.Video video){
+        mVidoesContainer.removeAllViews();
         for (CategorySliced.ArticleFeed feeds : video.feed) {
                 View videoView = mLayoutInflater.inflate(R.layout.item_video, mVidoesContainer, false);
                 ImageView videoImage = (ImageView) videoView.findViewById(R.id.video_image);
@@ -198,6 +199,7 @@ public class RevealCategory extends ActionBarActivity implements View.OnClickLis
     }
 
     private void setArticles(CategorySliced.Article article){
+        mArticleContainer.removeAllViews();
         for (CategorySliced.ArticleFeed feeds : article.feed) {
 
                 View articleView = mLayoutInflater.inflate(R.layout.item_article, mArticleContainer, false);
